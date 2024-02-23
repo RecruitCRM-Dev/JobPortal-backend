@@ -64,3 +64,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Steps after cloning  the project
+
+1. Run npm install 
+2. Run composer install
+3. Copy .env.example file and rename it to .env
+4. Run php artisan key:generate
+5. Create an empty database
+6. Enter database name and password in the .env file
+7. Run php artisan migrate:refresh --seed
