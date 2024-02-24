@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        \App\Models\JobSeeker::factory(100)->create();
+        \App\Models\User::factory(100)->create();
         \App\Models\Employee::factory(30)->create();
         $employees = \App\Models\Employee::all()->shuffle();
         for($i=0;$i<66;$i++)
@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
             ]);
             
         }
-        $job_seekers = \App\Models\JobSeeker::all()->shuffle();
+        $users = \App\Models\User::all()->shuffle();
         for($i=0;$i<100;$i++)
         {
-            $job_seeker = $job_seekers->pop();
+            $user = $users->pop();
             $cnt = rand(0,4);
             $jobs = \App\Models\Job::inRandomOrder()->take($cnt)->get();
             for($j=0;$j<$cnt;$j++)
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
                 $job = $jobs->pop();  
                 \App\Models\JobApplication::factory()->create([
                     'job_id' => $job->id,
-                    'job_seeker_id' => $job_seeker->id
+                    'user_id' => $user->id
                 ]); 
             }
 
