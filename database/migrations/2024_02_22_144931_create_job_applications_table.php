@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Job::class)->constrained();
             $table->foreignIdFor(JobSeeker::class)->constrained();
             $table->enum('status',JobApplication::$status)->default('Just_Applied');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_applications');
+        Schema::table('job_applications', function (Blueprint $table) {
+            $table->dropSoftDeletes(); 
+        });
     }
 };
