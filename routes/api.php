@@ -5,6 +5,7 @@ use App\Http\Controllers\JobController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\MyJobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,9 @@ use App\Http\Controllers\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::apiResource('jobapplication',JobApplicationController::class);
+Route::apiResource('myjobs',MyJobController::class)
+       ->only(['index']);
+Route::apiResource('jobapplications',JobApplicationController::class);
 Route::post('register/user', [AuthController::class, 'register']);
 Route::post('login/user', [AuthController::class, 'login']);
 
