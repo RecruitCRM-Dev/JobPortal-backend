@@ -57,6 +57,12 @@ class UserProfileController extends Controller
      */
     public function destroy(string $id)
     {
-        //    
+        $user = User::find($id);
+        if(!$user){
+            return response()->json(['User not found'],404);
+        }
+        Auth::logout();
+        $user->delete();
+        return response()->json(['User deleted'],201);     
     }
 }

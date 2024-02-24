@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +31,9 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('AuthToken')->plainTextToken;
 
-            return new LoginResource($user->load('tokens'));        
+            // return new LoginResource($user->load('tokens'));
+            return response()->json(['user' => $user, 'token' => $token]);
+        
         }
 
         $user = User::where('email', $request->email)->first();
@@ -46,4 +49,17 @@ class AuthController extends Controller
         return response()->json(['error' => 'Authentication failed'], 401);
     }
     
+
+    /**
+     * Logout the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
 }
