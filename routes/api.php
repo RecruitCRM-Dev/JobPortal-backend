@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\LatestController;
+use App\Http\Controllers\LatestJobController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +28,8 @@ Route::post('register/user', [AuthController::class, 'register']);
 Route::post('login/user', [AuthController::class, 'login']);
 Route::post('logout/user', [AuthController::class, 'logout']);
 
-Route::apiResource('jobs', JobController::class);
+Route::apiResource('jobs/latest',LatestController::class)->only(['index']);
 
-Route::apiResource('user/profile', UserProfileController::class);
+Route::apiResource('jobs', JobController::class)->only(['index','show']);
+
+Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
