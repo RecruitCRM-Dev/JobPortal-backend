@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->longText('about')->nullable();
             $table->enum('gender',User::$gender)->nullable();
             $table->string('phone')->nullable();
+            $table->enum('role',User::$role)->nullable();
             $table->longText('address')->nullable();
             $table->longText('resume')->nullable();
             $table->integer('experience')->nullable();

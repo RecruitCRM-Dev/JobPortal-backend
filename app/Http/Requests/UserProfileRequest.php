@@ -24,16 +24,18 @@ class UserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'gender' => 'required|in:Male,Female,Other', 
-            'phone' => 'required|string|max:20', 
-            'address' => 'required|string|max:255', 
-            'resume' => 'required|string|max:255', 
-            'experience' => 'required|integer|min:0', 
-            'profile_pic' => 'required|string|max:255', 
-            'education' => 'required|string|max:255', 
-            'skills' => 'required|string|max:255'
+            'name' => 'string|max:255',
+            'email' => 'string|email|max:255',
+            'about'=>'string|max:255',
+            'gender' => 'in:Male,Female,Other', 
+            'phone' => 'string|max:20', 
+            'role'=>'in:Software Developer, Graphic Designer, Sales, HR, Business, Project Manager, Marketing',
+            'address' => 'string|max:255', 
+            'resume' => 'string|max:255', 
+            'experience' => 'integer|min:0', 
+            'profile_pic' => 'string|max:255', 
+            'education' => 'string|max:255', 
+            'skills' => 'string|max:255'
         ];
     }
     

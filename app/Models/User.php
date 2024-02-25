@@ -45,6 +45,15 @@ class User extends Authenticatable
         'Female',
         'Others'
     ];
+    public static array $role =[
+        'Software Developer',
+        'Graphic Designer',
+        'Sales',
+        "HR",
+        "Business",
+        "Project Manager",
+        "Marketing"
+    ];
     public function jobapplication(): HasMany
     {
         return  $this->hasMany(JobApplication::class);
