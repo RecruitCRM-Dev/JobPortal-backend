@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobApplicationController;
-
+use App\Http\Controllers\MyJobController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,4 +34,6 @@ Route::apiResource('jobs', JobController::class)->only(['index','show']);
 
 Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
 
-Route::apiResource('job/application',JobApplicationController::class);
+Route::apiResource('myJobs',MyJobController::class)->only(['index']);
+
+Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
