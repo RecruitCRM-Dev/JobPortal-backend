@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
-
+use App\Models\Scopes\FilterJobs;
 class Job extends Model
 {
     use HasFactory;
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new FilterJobs);
+    // }
     public static array $category =[
         'IT',
         'Finance',
@@ -35,8 +39,8 @@ class Job extends Model
     return $query->when($filters['search'] ?? null, function ($query, $search) {
         $search = strtolower($search); // Convert search term to lowercase
         $query->where(function ($query) use ($search) {
-            $query->whereRaw('LOWER(title) like ?', ['%' . $search . '%'])
-                ->orWhereRaw('LOWER(description) like ?', ['%' . $search . '%'])
+            $query->where('LOWER(title) like ?', ['%' . $search . '%'])
+                ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
                 ->orWhereHas('employee', function($query) use($search){
                     $query->whereRaw('LOWER(company_name) like ?', ['%' . $search . '%']);
                 });
