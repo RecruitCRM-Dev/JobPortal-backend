@@ -28,13 +28,16 @@ class MyJobController extends Controller
         ->whereHas('job', function ($query) use ($filters) {
             $query->filter($filters);
         })
-        ->where('status', $request['job_application_status'])
+        ->when($request['job_application_status'] ?? null, function($query, $status){
+            $query->where('status',$status);
+        })
         ->with('job')
         ->get();
         return  response()->json(['job_applications'=> $job_applications]);
     }
 
     /**
+    
      * Store a newly created resource in storage.
      */
     

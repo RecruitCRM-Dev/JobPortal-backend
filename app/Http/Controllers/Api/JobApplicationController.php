@@ -29,7 +29,7 @@ class JobApplicationController extends Controller
     $job_id = $validatedData['job_id'];
         $job = Job::find($job_id);
         $job->jobapplication()->create($validatedData);
-        return response()->json('The job application has been submitted successfully');
+        return response()->json(['message'=>'The job application has been submitted successfully']);
     }
 
     /**
