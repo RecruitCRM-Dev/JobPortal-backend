@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('experience')->nullable();
             $table->longText('profile_pic')->nullable();
             $table->longText('education')->nullable();
-            $table->longText('skills')->nullable();
+            $table->enum('skills',User::$skills)->nullable();
             $table->timestamp('email_verified_at')->nullable();            
             $table->rememberToken();
             $table->timestamps();

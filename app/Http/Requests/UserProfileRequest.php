@@ -35,7 +35,7 @@ class UserProfileRequest extends FormRequest
             'experience' => 'integer|min:0', 
             'profile_pic' => 'string|max:255', 
             'education' => 'string|max:255', 
-            'skills' => 'string|max:255'
+            'skills' => 'in:HTML5,Javascript,Vue,Laravel,ReactJS, Python, Java, Django'
         ];
     }
     
