@@ -19,7 +19,7 @@ class AuthController extends Controller
         $data = $request->validated();
         $user = User::create($data);
        
-        $accessToken = $user->createToken('authToken')->accessToken;
+        $accessToken = $user->createToken('authToken')->plainTextToken;
 
         return response()->json(['user' => $user, 'access_token' => $accessToken], 201);
     }
@@ -31,7 +31,6 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('AuthToken')->plainTextToken;
 
-            // return new LoginResource($user->load('tokens'));
             return response()->json(['user' => $user, 'token' => $token]);
         
         }
