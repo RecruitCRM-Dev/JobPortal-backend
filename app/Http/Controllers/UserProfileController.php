@@ -9,7 +9,8 @@ use App\Models\User;
 
 class UserProfileController extends Controller
 {
-     /**
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)

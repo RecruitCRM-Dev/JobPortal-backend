@@ -1,15 +1,18 @@
 <?php
 
-use App\Http\Controllers\FilterController;
-use App\Http\Controllers\JobController;
-use App\Http\Controllers\LatestJobController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Resources\RegisterResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\JobApplicationController;
+use App\Http\Resources\RegisterResource;
 use App\Http\Controllers\MyJobController;
+use App\Http\Controllers\FilterController;
+use App\Http\Controllers\LatestJobController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\EmployerAuthController;
+use App\Http\Controllers\EmployerPostedJobsController;
+use App\Http\Controllers\EmployerProfileController;
+use App\Http\Controllers\JobApplicationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,3 +46,15 @@ Route::apiResource('user/profile', UserProfileController::class)->only(['show','
 Route::apiResource('myJobs',MyJobController::class)->only(['index']);
 
 Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
+
+//  Employer Routes 
+
+// Authentication
+Route::post('register/employer', [EmployerAuthController::class, 'register']);
+Route::post('login/employer', [EmployerAuthController::class, 'login']);
+Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
+
+
+Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index']);
+Route::apiResource('employer.job', EmployerPostedJobsController::class)
+    ->scoped();

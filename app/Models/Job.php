@@ -26,36 +26,40 @@ class Job extends Model
         'Active',
         'Expired'
     ];
+   
     public function employee():BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
+    
     public function jobapplication():HasMany
     {
         return $this->hasMany(JobApplication::class);
     }
+
     public function scopeFilter(Builder|QueryBuilder $query, array $filters): Builder|QueryBuilder
     {
-    return $query->when($filters['search'] ?? null, function ($query, $search) {
-        $search = strtolower($search); // Convert search term to lowercase
-        $query->where(function ($query) use ($search) {
-            $query->where('LOWER(title) like ?', ['%' . $search . '%'])
-                ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
-                ->orWhereHas('employee', function($query) use($search){
-                    $query->whereRaw('LOWER(company_name) like ?', ['%' . $search . '%']);
-                });
+        return $query->when($filters['search'] ?? null, function ($query, $search) {
+            $search = strtolower($search); // Convert search term to lowercase
+            $query->where(function ($query) use ($search) {
+                $query->where('LOWER(title) like ?', ['%' . $search . '%'])
+                    ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
+                    ->orWhereHas('employee', function($query) use($search){
+                        $query->whereRaw('LOWER(company_name) like ?', ['%' . $search . '%']);
+                    });
+            });
+        })->when($filters['min_salary'] ?? null, function ($query, $minSalary) {
+            $query->where('salary', '>=', $minSalary);
+        })->when($filters['max_salary'] ?? null, function ($query, $maxSalary) {
+            $query->where('salary', '<=', $maxSalary);
+        })->when($filters['experience'] ?? null, function ($query, $experience) {
+            $query->where('experience', $experience);
+        })->when($filters['category'] ?? null, function ($query, $category) {
+            $query->where('category', $category);
         });
-    })->when($filters['min_salary'] ?? null, function ($query, $minSalary) {
-        $query->where('salary', '>=', $minSalary);
-    })->when($filters['max_salary'] ?? null, function ($query, $maxSalary) {
-        $query->where('salary', '<=', $maxSalary);
-    })->when($filters['experience'] ?? null, function ($query, $experience) {
-        $query->where('experience', $experience);
-    })->when($filters['category'] ?? null, function ($query, $category) {
-        $query->where('category', $category);
-    });
-}
-public function scopeLatest(Builder|QueryBuilder $query): void{
-    $query->orderBy('created_at', 'desc');
-}
+    }
+
+    public function scopeLatest(Builder|QueryBuilder $query): void{
+        $query->orderBy('created_at', 'desc');
+    }
 }
