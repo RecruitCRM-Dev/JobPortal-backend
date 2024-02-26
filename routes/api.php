@@ -4,6 +4,7 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LatestJobController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Resources\RegisterResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -21,7 +22,12 @@ use App\Http\Controllers\MyJobController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $token = $request->header('Authorization');
+
+    if ($token && str_starts_with($token, 'Bearer ')) {
+        $token = substr($token, 7); // Remove 'Bearer ' prefix
+    }
+    return new RegisterResource($request->user(),$token);
 });
 
 Route::post('register/user', [AuthController::class, 'register']);
