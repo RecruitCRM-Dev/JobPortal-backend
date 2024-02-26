@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class JobDetailResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'data' => [
+                'type' => 'jobs', 
+                'job_id' => $this->id,
+                'attributes' => [
+                    'title' => $this->title,
+                    'description' => $this->description,
+                    'category' => $this->category,
+                    'experience' => $this->experience,
+                    'status' => $this->status,
+                    'location' => $this->location,
+                    'posted_by' => new EmployerResource($this->employee),
+                    'posted_at' => $this->created_at->diffForHumans()
+                ]
+            ],
+        ];
+    }
+}
