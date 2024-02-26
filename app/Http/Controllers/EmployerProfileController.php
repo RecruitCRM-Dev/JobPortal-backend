@@ -27,13 +27,14 @@ class EmployerProfileController extends Controller
      */
     public function update(EmployerProfileRequest $request, string $id)
     {
+        
         $employer = Employee::find($id);
 
         if (!$employer) {
             return response()->json(['error' => 'Employer not found'], 404);
         }
+        
         $employer->update($request->all());
-
         return response()->json(['user' => $employer], 201);
     }
 

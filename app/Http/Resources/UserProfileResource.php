@@ -21,15 +21,11 @@ class UserProfileResource extends JsonResource
                 'attributes' => [
                     'profile_pic' => $this->profile_pic,
                     'name' => $this->name,
-                    '' => ,
                     'email' => $this->email,
                     'role'=> $this->role,
                     'address' => 'string|max:255', 
                     'resume' => 'string|max:255', 
                     'experience' => 'integer|min:0', 
-                    'profile_pic' => 'string|max:255', 
-                    'education' => 'string|max:255', 
-                    'skills.*' => 'in:HTML5,Javascript,Vue,Laravel,ReactJS, Python, Java, Django',
                 ]
             ],
         ];
