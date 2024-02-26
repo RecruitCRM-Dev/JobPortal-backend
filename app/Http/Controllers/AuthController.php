@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegisterResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -18,10 +19,10 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $user = User::create($data);
-       
+
         $accessToken = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json(['user' => $user, 'access_token' => $accessToken], 201);
+        return new RegisterResource($user, $accessToken);
     }
     public function login(Request $request)
     {
@@ -31,8 +32,8 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('AuthToken')->plainTextToken;
 
-            return response()->json(['id' => $user->id, 'token' => $token]);
-        
+            return new LoginResource($user, $token);
+
         }
 
         $user = User::where('email', $request->email)->first();
@@ -47,7 +48,7 @@ class AuthController extends Controller
 
         return response()->json(['error' => 'Authentication failed'], 401);
     }
-    
+
 
     /**
      * Logout the authenticated user.
