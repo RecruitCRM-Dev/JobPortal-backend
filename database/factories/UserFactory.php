@@ -36,7 +36,7 @@ class UserFactory extends Factory
             'experience' => fake()->numberBetween(0,5),
             'profile_pic' => fake()->imageUrl(),
             'education' => fake()->paragraph(),
-            'skills' => fake()->randomElement(User::$skills),
+            'skills' => implode(',', fake()->randomElements(User::$skills, rand(1, count(User::$skills)))),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

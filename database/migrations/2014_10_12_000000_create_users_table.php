@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('experience')->nullable();
             $table->longText('profile_pic')->nullable();
             $table->longText('education')->nullable();
-            $table->enum('skills',User::$skills)->nullable();
+            $table->set('skills', ['HTML5', 'Javascript', 'Vue', 'Laravel', 'ReactJS', 'Python', 'Java', 'Django'])->nullable();            
             $table->timestamp('email_verified_at')->nullable();            
             $table->rememberToken();
             $table->timestamps();
