@@ -13,13 +13,13 @@ use Illuminate\Pagination\Paginator;
 class JobController extends Controller
 {
     public function index(Request $request){
-    
+
         $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
         $jobs = Job::with('employee')->filter($filters)->paginate(12);
 
-        // $perPage = $request->query('perPage', 12); 
-        // $currentPage = $request->query('page', 1); 
+        // $perPage = $request->query('perPage', 12);
+        // $currentPage = $request->query('page', 1);
 
         // Paginator::currentPageResolver(function () use ($currentPage) {
         //     return $currentPage;
@@ -30,7 +30,7 @@ class JobController extends Controller
         // dd($jobs);
         return JobDetailResource::collection($jobs);
         // return response()->json(['jobs' => $paginatedJobs], 200);
-    }    
+    }
 
     public function show(Request $request, $id)
     {
