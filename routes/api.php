@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CandidateProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\EmployerAuthController;
 use App\Http\Controllers\EmployerPostedJobsController;
 use App\Http\Controllers\EmployerProfileController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\UploadFileController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,13 +41,10 @@ Route::post('login/user', [AuthController::class, 'login']);
 Route::post('logout/user', [AuthController::class, 'logout']);
 
 Route::apiResource('jobs/latest',LatestJobController::class)->only(['index']);
-
 Route::apiResource('jobs', JobController::class)->only(['index','show']);
-
 Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
-
+Route::post('user/profile/update/{id}', [UserProfileController::class, 'updateUser']);
 Route::apiResource('myJobs',MyJobController::class)->only(['index']);
-
 Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
 
 //  Employer Routes 
@@ -53,7 +53,6 @@ Route::apiResource('job/application',JobApplicationController::class)->only(['st
 Route::post('register/employer', [EmployerAuthController::class, 'register']);
 Route::post('login/employer', [EmployerAuthController::class, 'login']);
 Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
-
 
 Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index']);
 Route::apiResource('employer.job', EmployerPostedJobsController::class)
