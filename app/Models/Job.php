@@ -54,7 +54,7 @@ class Job extends Model
         })->when($filters['max_salary'] ?? null, function ($query, $maxSalary) {
             $query->where('salary', '<=', $maxSalary);
         })->when($filters['experience'] ?? null, function ($query, $experience) {
-            $query->where('experience', $experience);
+            $query->where('experience', '<',$experience);
         })->when($filters['category'] ?? null, function ($query, $category) {
             $query->where('category', $category);
         });
