@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\EmployerProfileResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobDetailResource extends JsonResource
@@ -25,7 +26,7 @@ class JobDetailResource extends JsonResource
                     'experience' => $this->experience,
                     'status' => $this->status,
                     'location' => $this->location,
-                    'posted_by' => new EmployerResource($this->employee),
+                    'posted_by' => new EmployerProfileResource($this->employee),
                     'posted_at' => $this->created_at->diffForHumans()
                 ]
             ],
