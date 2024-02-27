@@ -19,10 +19,12 @@ class Employee extends Authenticatable{
         'password',
         'remember_token',
     ];
+    
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
     public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);

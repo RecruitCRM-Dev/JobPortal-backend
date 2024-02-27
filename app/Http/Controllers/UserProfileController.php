@@ -22,6 +22,34 @@ class UserProfileController extends Controller
         return response()->json(['user' => $user]);
     }
 
+    //TODO:Refactor this updateUser part
+    public function updateUser(UserProfileRequest $request, string $id) {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $cv = $request->file('resume');
+        $avatar = $request->file('avatar');
+
+        $data = $request->except(['resume', 'avatar']);
+
+        if ($cv) {
+            $cvPath = $cv->store('resume', 'public');
+            $data['resume'] = "http://localhost:8000/storage/$cvPath";
+        }
+
+        if ($avatar) {
+            $avatarPath = $avatar->store('avatar', 'public');
+            $data['profile_pic'] = "http://localhost:8000/storage/$avatarPath";
+        }
+
+        $user->update($data);
+
+        return response()->json(['user' => $user], 201);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -33,9 +61,10 @@ class UserProfileController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
 
+        $file = $request->file('resume');
         $user->update(array_merge($request->except('skills'), ['skills' => implode(',', $request->input('skills'))]));
 
-        return response()->json(['user' => $user], 201);
+        return response()->json(['user' => $file], 201);
     }
 
     /**
