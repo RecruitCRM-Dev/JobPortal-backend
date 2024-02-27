@@ -22,6 +22,19 @@ class JobApplicationController extends Controller
         return response()->json('The job application has been submitted successfully');
     }
 
+    public function checkUserHasApplied(Request $request, string $userId, string $jobId) {
+
+        $jobApplication = JobApplication::where('job_id', $jobId)
+        ->where('user_id', $userId)
+        ->first();
+
+        if ($jobApplication) {
+            return response()->json(['message' => 'Already applied for the job!'], 409);
+        }
+    
+        return response()->json(['message' => 'User has not applied for the job.'], 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -34,4 +47,4 @@ class JobApplicationController extends Controller
         $job_application->delete();
         return response()->json(['message'=>'Job Application Deleted Successfully!']);
     }
-}
+} 
