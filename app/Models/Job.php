@@ -20,7 +20,8 @@ class Job extends Model
         'IT',
         'Finance',
         'Sales',
-        'Marketing'
+        'Marketing',
+        'HR'
     ];
     public static array $status =[
         'Active',
