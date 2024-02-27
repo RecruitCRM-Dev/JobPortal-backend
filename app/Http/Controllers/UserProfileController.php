@@ -31,20 +31,27 @@ class UserProfileController extends Controller
         }
 
         $cv = $request->file('resume');
-        $avatar = $request->file('avatar');
+        $profile_pic = $request->file('profile_pic');
 
-        $data = $request->except(['resume', 'avatar']);
+        $data = $request->except(['resume', 'profile_pic', 'skills']);
+
+        if($request->has('skills')){
+            $data['skills'] = implode(',', $request->input('skills'));
+        }
+
+
 
         if ($cv) {
             $cvPath = $cv->store('resume', 'public');
             $data['resume'] = "http://localhost:8000/storage/$cvPath";
         }
 
-        if ($avatar) {
-            $avatarPath = $avatar->store('avatar', 'public');
-            $data['profile_pic'] = "http://localhost:8000/storage/$avatarPath";
+        if ($profile_pic) {
+            $profilePicPath = $profile_pic->store('avatar', 'public');
+            $data['profile_pic'] = "http://localhost:8000/storage/$profilePicPath";
         }
 
+        // dd($data);
         $user->update($data);
 
         return response()->json(['user' => $user], 201);
