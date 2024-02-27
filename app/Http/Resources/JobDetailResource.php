@@ -17,16 +17,17 @@ class JobDetailResource extends JsonResource
     {
         return [
             'data' => [
-                'type' => 'jobs', 
+                'type' => 'jobs',
                 'job_id' => $this->id,
                 'attributes' => [
                     'title' => $this->title,
                     'description' => $this->description,
                     'category' => $this->category,
                     'experience' => $this->experience,
+                    'salary' => $this->salary,
                     'status' => $this->status,
                     'location' => $this->location,
-                    'posted_by' => new EmployerProfileResource($this->employee),
+                    'posted_by' => new EmployerResource($this->employee),
                     'posted_at' => $this->created_at->diffForHumans()
                 ]
             ],

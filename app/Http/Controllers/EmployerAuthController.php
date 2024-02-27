@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LoginResource;
+use App\Http\Resources\RegisterResource;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -11,16 +13,16 @@ use App\Http\Requests\RegisterRequest;
 
 class EmployerAuthController extends Controller
 {
-    
+
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-                
+
         $user_already_present = User::where('email', $request->email)->first();
         if($user_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
-        } 
-        
+        }
+
         $employer_already_present = Employee::where('email', $request->email)->first();
         if($employer_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
@@ -29,10 +31,10 @@ class EmployerAuthController extends Controller
         $employer = Employee::create($data);
         $accessToken = $employer->createToken('api-token')->plainTextToken;
 
-        return response()->json(['id' => $employer, 'access_token' => $accessToken], 201);
+        return new RegisterResource($employer, $accessToken);
     }
 
-    
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -58,12 +60,9 @@ class EmployerAuthController extends Controller
 
         $token = $employer->createToken('api-token')->plainTextToken;
 
-        return response()->json([
-            'id' => $employer->id,
-            'token'=> $token
-        ]);
+        return new LoginResource($employer, $token);
     }
-    
+
 
     /**
      * Logout the authenticated user.

@@ -54,9 +54,7 @@ class User extends Authenticatable
         "Project Manager",
         "Marketing"
     ];
-    public static array $skills = [
-        'HTML5','Javascript','Vue','Laravel','ReactJS', 'Python', 'Java', 'Django'
-    ];
+    public static array $skills = ['HTML5','Javascript','Vue','Laravel','ReactJS', 'Python', 'Java', 'Django'];
     public function jobapplication(): HasMany
     {
         return  $this->hasMany(JobApplication::class);
