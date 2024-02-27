@@ -20,9 +20,8 @@ class EmployeeFactory extends Factory
     {
         return [
             'name' => fake()->domainName(),
-            'description' => fake()->paragraph(10, true),
+            'description' => fake()->paragraph(15, true),
             'email' => fake()->unique()->safeEmail(),
-            'responsibilities' => fake()->paragraph(10, true),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
