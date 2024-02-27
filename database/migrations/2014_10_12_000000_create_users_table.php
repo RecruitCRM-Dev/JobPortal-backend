@@ -24,7 +24,7 @@ return new class extends Migration
             $table->longText('address')->nullable();
             $table->longText('resume')->nullable();
             $table->integer('experience')->nullable();
-            $table->longText('profile_pic')->default('https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png');
+            $table->longText('profile_pic')->nullable();
             $table->longText('education')->nullable();
             $table->set('skills', ['HTML5', 'Javascript', 'Vue', 'Laravel', 'ReactJS', 'Python', 'Java', 'Django'])->nullable();
             $table->timestamp('email_verified_at')->nullable();

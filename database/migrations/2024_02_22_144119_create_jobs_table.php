@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description')->nullable();
+            $table->longText('responsibilities')->nullable();
             $table->enum('category',Job::$category);
             $table->integer('experience');
             $table->string('location');

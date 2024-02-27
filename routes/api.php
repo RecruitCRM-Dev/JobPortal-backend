@@ -46,6 +46,7 @@ Route::apiResource('user/profile', UserProfileController::class)->only(['show','
 Route::post('user/profile/update/{id}', [UserProfileController::class, 'updateUser']);
 Route::apiResource('myJobs',MyJobController::class)->only(['index']);
 Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
+Route::get('/user/{userId}/applied/{jobId}', [JobApplicationController::class, 'checkUserHasApplied']);
 
 //  Employer Routes 
 
@@ -54,6 +55,9 @@ Route::post('register/employer', [EmployerAuthController::class, 'register']);
 Route::post('login/employer', [EmployerAuthController::class, 'login']);
 Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
 
-Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index']);
+Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index','update']);
+Route::post('employer/profile/update/{id}', [EmployerProfileController::class, 'updateEmployer']);
 Route::apiResource('employer.job', EmployerPostedJobsController::class)
     ->scoped();
+
+ 

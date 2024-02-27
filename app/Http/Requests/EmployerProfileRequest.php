@@ -11,10 +11,10 @@ class EmployerProfileRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return false;
-    }
+    // public function authorize(): bool
+    // {
+    //     return false;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,11 +24,11 @@ class EmployerProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255',
-            'about'=>'string|max:255',
-            'address' => '', 
-            'experience' => 'integer|min:0', 
-            'profile_pic' => 'string|max:255', 
+            // 'name' => 'string|max:255',
+            // 'description'=>'string|max:255',
+            // 'address' => '', 
+            // 'experience' => 'integer|min:0', 
+            // 'profile_pic' => 'string|max:255', 
         ];
     }
 

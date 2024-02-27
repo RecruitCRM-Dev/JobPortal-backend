@@ -19,7 +19,9 @@ class JobFactory extends Factory
     {
         return [
             'title' => fake()->jobTitle(),
-            'description' => fake()->sentence(),
+            'description' => fake()->paragraph(15, true),
+            'responsibilities' => fake()->paragraph(15, true),
+
             'category' => fake()->randomElement(Job::$category),
             'experience' => fake()->numberBetween(0,20),
             'location' => fake()->city(),

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\EmployerResource;
 use App\Http\Requests\EmployerProfileRequest;
+use App\Http\Resources\EmployerProfileResource;
 
 class EmployerProfileController extends Controller
 {
@@ -19,23 +19,30 @@ class EmployerProfileController extends Controller
         if(!$employer){
             return response()->json(['error'=>'User not found'],404);
         }
-        return new EmployerResource($employer);
+        return new EmployerProfileResource($employer);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(EmployerProfileRequest $request, string $id)
-    {
-        
+    
+    //TODO:Refactor this updateEmployer part 
+    public function updateEmployer(EmployerProfileRequest $request, string $id) {
         $employer = Employee::find($id);
 
         if (!$employer) {
             return response()->json(['error' => 'Employer not found'], 404);
         }
-        
-        $employer->update($request->all());
-        return response()->json(['user' => $employer], 201);
+
+        $avatar = $request->file('avatar');
+
+        $data = $request->except(['avatar']);
+
+        if ($avatar) {
+            $avatarPath = $avatar->store('avatar', 'public');
+            $data['profile_pic'] = "http://localhost:8000/storage/$avatarPath";
+        }
+
+        $employer->update($data);
+         
+        return new EmployerProfileResource($employer);
     }
 
     /**
