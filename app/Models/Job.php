@@ -45,7 +45,7 @@ class Job extends Model
                 $query->where('LOWER(title) like ?', ['%' . $search . '%'])
                     ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
                     ->orWhereHas('employee', function($query) use($search){
-                        $query->whereRaw('LOWER(company_name) like ?', ['%' . $search . '%']);
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $search . '%']);
                     });
             });
         })->when($filters['min_salary'] ?? null, function ($query, $minSalary) {

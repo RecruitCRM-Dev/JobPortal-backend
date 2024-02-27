@@ -14,9 +14,18 @@ class JobController extends Controller
 {
     public function index(Request $request){
 
-        $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
+        $search = $request->input('search');
+        $min_salary = $request->input('min_salary');
+        $max_salary = $request->input('max_salary');
+        $experience = $request->input('experience');
+        $category = $request->input('category');
+        // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
-        $jobs = Job::with('employee')->filter($filters)->paginate(12);
+        $jobs = Job::with('employee')->filter(['search' => $search,
+        'min_salary' => $min_salary,
+        'max_salary' => $max_salary,
+        'experience' => $experience,
+        'category' => $category])->paginate(12);
 
         // $perPage = $request->query('perPage', 12);
         // $currentPage = $request->query('page', 1);
