@@ -27,22 +27,22 @@ class UserProfileRequest extends FormRequest
             'name' => 'string|max:255',
             'email' => 'string|email|max:255',
             'about'=>'string|max:255',
-            'gender' => 'in:Male,Female,Other', 
-            'phone' => 'string|max:20', 
-            'role'=>'in:Software Developer, Graphic Designer, Sales, HR, Business, Project Manager, Marketing',
-            'address' => 'string|max:255', 
-            'resume' => 'string|max:255', 
-            'experience' => 'integer|min:0', 
-            'profile_pic' => 'string|max:255', 
-            'education' => 'string|max:255', 
-            'skills.*' => 'in:HTML5,Javascript,Vue,Laravel,ReactJS, Python, Java, Django',
+            'gender' => 'in:Male,Female,Other',
+            'phone' => 'string|max:20',
+            'role'=>'in:Software Developer,Graphic Designer,Sales,HR,Business,Project Manager,Marketing',
+            'address' => 'string|max:255',
+            'resume' => 'file|max:10240',
+            'experience' => 'integer|min:0',
+            'profile_pic' => 'string|max:255',
+            'education' => 'string|max:255',
+            'skills.*' => 'in:HTML5,Javascript,Vue,Laravel,ReactJS,Python,Java,Django',
         ];
     }
-    
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
             'data' => $validator->errors()
-        ]));
+        ],400));
     }
 }

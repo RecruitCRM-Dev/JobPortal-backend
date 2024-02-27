@@ -34,7 +34,6 @@ class UserFactory extends Factory
             'address' => fake()->address(),
             'resume' => fake()->paragraph(),
             'experience' => fake()->numberBetween(0,5),
-            'profile_pic' => fake()->imageUrl(),
             'education' => fake()->paragraph(),
             'skills' => implode(',', fake()->randomElements(User::$skills, rand(1, count(User::$skills)))),
             'email_verified_at' => now(),
