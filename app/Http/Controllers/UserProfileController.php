@@ -16,10 +16,10 @@ class UserProfileController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        if(!$user){
-            return response()->json(['error'=>'User not found'],404);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
-        return response()->json(['user'=>$user]);
+        return response()->json(['user' => $user]);
     }
 
     /**
@@ -32,7 +32,8 @@ class UserProfileController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-        $user->update($request->all());
+
+        $user->update(array_merge($request->except('skills'), ['skills' => implode(',', $request->input('skills'))]));
 
         return response()->json(['user' => $user], 201);
     }
@@ -43,11 +44,11 @@ class UserProfileController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
-        if(!$user){
-            return response()->json(['User not found'],404);
+        if (!$user) {
+            return response()->json(['User not found'], 404);
         }
         Auth::logout();
         $user->delete();
-        return response()->json(['User deleted'],201);     
+        return response()->json(['User deleted'], 201);
     }
 }
