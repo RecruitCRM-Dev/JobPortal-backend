@@ -12,20 +12,70 @@ use Illuminate\Pagination\Paginator;
 
 class JobController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $search = $request->input('search');
-        $min_salary = $request->input('min_salary');
-        $max_salary = $request->input('max_salary');
+        $salary = $request->input('salary');
         $experience = $request->input('experience');
         $category = $request->input('category');
         // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
-        $jobs = Job::with('employee')->filter(['search' => $search,
-        'min_salary' => $min_salary,
-        'max_salary' => $max_salary,
-        'experience' => $experience,
-        'category' => $category])->paginate(12);
+        $jobs = Job::with('employee')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('title', 'like', "%$search%");
+            })
+            ->when($salary, function ($query) use ($salary) {
+                $query->where(function ($query) use ($salary) {
+                    foreach ($salary as $sal) {
+                        switch ($sal) {
+                            case '2lpa': // 2Lpa
+                                $query->orWhere('salary', '<', 200000);
+                                break;
+                            case '6lpa': // 6Lpa
+                                $query->orWhereBetween('salary', [200000, 600000]);
+                                break;
+                            case '12lpa': // 12Lpa
+                                $query->orWhereBetween('salary', [600000, 1200000]);
+                                break;
+                            case '18lpa': // 18Lpa
+                                $query->orWhereBetween('salary', [1200000, 1800000]);
+                                break;
+                            case '30lpa': // 30Lpa
+                                $query->orWhereBetween('salary', [1800000, 3000000]);
+                                break;
+                            case '40lpa': // 40Lpa
+                                $query->orWhere('salary', '>', 4000000);
+                                break;
+                            // Add more cases as needed
+                        }
+                    }
+                });
+                return $query;
+            })
+            ->when($experience, function ($query) use ($experience) {
+                $query->where(function ($query) use ($experience) {
+                    foreach ($experience as $exp) {
+                        switch ($exp) {
+                            case 'entry':
+                                $query->orWhere('experience', '<', 2);
+                                break;
+                            case 'intermediate':
+                                $query->orWhereBetween('experience', [2, 15]);
+                                break;
+                            case 'senior':
+                                $query->orWhere('experience', '>', 15);
+                                break;
+                            // Add more cases as needed
+                        }
+                    }
+                });
+                return $query;
+            })
+            ->when($category, function ($query) use ($category) {
+                return $query->whereIn('category', $category);
+            })
+            ->paginate(12);
 
         // $perPage = $request->query('perPage', 12);
         // $currentPage = $request->query('page', 1);
