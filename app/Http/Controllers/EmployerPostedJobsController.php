@@ -49,10 +49,10 @@ class EmployerPostedJobsController extends Controller
 
         $jobApplication = JobApplication::where('job_id', $job->id)
         ->where('user_id', $userId)
-        ->get();
-        
+        ->first();
+
         $jobApplication->status = $status;
-    
+        $jobApplication->save();
         return response()->json(['message' => 'Status changed successfully.'], 200);
     }
 }
