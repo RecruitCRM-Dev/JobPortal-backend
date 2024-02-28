@@ -57,7 +57,10 @@ Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
 
 Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index','update']);
 Route::post('employer/profile/update/{id}', [EmployerProfileController::class, 'updateEmployer']);
+
+// Route::put('employer/{employer}/job/{job}/user/{user}', [EmployerPostedJobsController::class, 'changeTheStatusOfCandidate']);
 Route::apiResource('employer.job', EmployerPostedJobsController::class)
     ->scoped();
+
 
  

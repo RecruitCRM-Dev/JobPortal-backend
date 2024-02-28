@@ -27,6 +27,23 @@ class Job extends Model
         'Active',
         'Expired'
     ];
+
+    public static array $jobType = [
+        'Full Time',
+        'Part Time',
+        'Internship',
+        'Freelancing',
+    ];
+
+        protected $fillable = [ 
+        'title',
+        'description',
+        'responsibilities',
+        'category',
+        'salary',
+        'location',
+        'status'
+    ];
    
     public function employee():BelongsTo
     {
