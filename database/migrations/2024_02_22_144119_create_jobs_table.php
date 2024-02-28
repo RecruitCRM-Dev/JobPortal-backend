@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('responsibilities')->nullable();
             $table->enum('category',Job::$category);
             $table->integer('experience');
+            $table->enum('type', Job::$jobType);
             $table->string('location');
             $table->unsignedInteger('salary');
             $table->enum('status',Job::$status)->default('Active');

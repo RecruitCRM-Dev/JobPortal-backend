@@ -27,6 +27,13 @@ class Job extends Model
         'Active',
         'Expired'
     ];
+
+    public static array $jobType = [
+        'Full Time',
+        'Part Time',
+        'Internship',
+        'Freelancing',
+    ];
    
     public function employee():BelongsTo
     {
