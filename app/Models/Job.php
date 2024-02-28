@@ -34,6 +34,16 @@ class Job extends Model
         'Internship',
         'Freelancing',
     ];
+
+        protected $fillable = [ 
+        'title',
+        'description',
+        'responsibilities',
+        'category',
+        'salary',
+        'location',
+        'status'
+    ];
    
     public function employee():BelongsTo
     {

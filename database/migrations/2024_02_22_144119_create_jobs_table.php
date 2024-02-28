@@ -19,7 +19,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('responsibilities')->nullable();
             $table->enum('category',Job::$category);
-            $table->integer('experience');
+            $table->integer('experience')->nullable();
             $table->enum('type', Job::$jobType);
             $table->string('location');
             $table->unsignedInteger('salary');

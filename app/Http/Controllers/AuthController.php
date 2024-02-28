@@ -33,7 +33,6 @@ class AuthController extends Controller
             $token = $user->createToken('AuthToken')->plainTextToken;
 
             return new LoginResource($user, $token);
-
         }
 
         $user = User::where('email', $request->email)->first();

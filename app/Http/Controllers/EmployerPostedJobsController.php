@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JobPostingRequest;
 use App\Models\Job;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -26,5 +27,32 @@ class EmployerPostedJobsController extends Controller
        
         // return JobApplicationResource::collection([$users, $job]);
         return response()->json(['job' => $job, 'users' => $users]);
+    }
+
+    //TODO: how to uniquely define a job ?
+    public function store(JobPostingRequest $request, Employee $employer) {
+
+        $validatedData = $request->validated();
+        $job = $employer->jobs()->create($validatedData);
+        return response()->json(['message' => 'Job Posted Successfully!'], 200);
+    }
+
+    public function update(Request $request, Employee $employer, Job $job) {
+
+        $request->validate([
+            'userId' => 'required',
+            'status' => 'required',
+        ]);
+    
+        $userId = $request->input('userId');
+        $status = $request->input('status');
+
+        $jobApplication = JobApplication::where('job_id', $job->id)
+        ->where('user_id', $userId)
+        ->get();
+        
+        $jobApplication->status = $status;
+    
+        return response()->json(['message' => 'Status changed successfully.'], 200);
     }
 }
