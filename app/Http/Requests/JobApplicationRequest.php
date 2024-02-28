@@ -26,21 +26,21 @@ class JobApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'job_id' => 'required', 
+            'job_id' => 'required',
             'user_id' => [
                 'required',
                 Rule::unique('job_applications')->where(function ($query) {
                     return $query->where('job_id', $this->job_id)
                                  ->where('user_id', $this->user_id);
                 })
-            ],  
-            'status' => 'required| in:Just_Applied,ResumeViewed,Underconsideration,Rejected,Selected' 
+            ],
+            'status' => 'required| in:Just_Applied,ResumeViewed,Underconsideration,Rejected,Selected'
         ];
     }
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
             'data' => $validator->errors()
-        ]));
+        ], 422));
     }
 }
