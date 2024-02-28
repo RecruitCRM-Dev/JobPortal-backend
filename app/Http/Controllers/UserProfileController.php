@@ -39,8 +39,6 @@ class UserProfileController extends Controller
             $data['skills'] = implode(',', $request->input('skills'));
         }
 
-
-
         if ($cv) {
             $cvPath = $cv->store('resume', 'public');
             $data['resume'] = "http://localhost:8000/storage/$cvPath";
