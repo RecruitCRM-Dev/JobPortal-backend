@@ -12,9 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Employee extends Authenticatable{ 
     use HasFactory;
     use HasApiTokens, HasFactory, Notifiable;
+    protected $guard = 'employee';
 
     protected $fillable = ['name', 'email', 'about', 'password', 'address', 'profile_pic', 'experience'];
-
+    
     protected $hidden = [
         'password',
         'remember_token',

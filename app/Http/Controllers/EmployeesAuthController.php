@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
-class EmployerAuthController extends Controller
+class EmployeesAuthController extends Controller
 {
 
     public function register(RegisterRequest $request)

@@ -8,19 +8,21 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\JobApplication;
 use App\Http\Resources\JobDetailResource;
-use App\Http\Resources\JobApplicationResource;
 
-class EmployerPostedJobsController extends Controller
+class EmployeePostedJobsController extends Controller
 {
     
-    public function index(Employee $employer)
+    public function index(Employee $employee)
     {
-        $jobs = $employer->jobs()->paginate(10);
+        $this->authorize('update', $employee);
+        $jobs = $employee->jobs()->paginate(10);
         return JobDetailResource::collection($jobs);
     }
 
-    public function show(Employee $employer, Job $job)
+    public function show(Employee $employee, Job $job)
     {   
+
+        $this->authorize('update', $employee);
         $users = JobApplication::with(['user'])
         ->where('job_id', $job->id)
         ->get();
@@ -30,15 +32,17 @@ class EmployerPostedJobsController extends Controller
     }
 
     //TODO: how to uniquely define a job ?
-    public function store(JobPostingRequest $request, Employee $employer) {
+    public function store(JobPostingRequest $request, Employee $employee) {
 
+        $this->authorize('update', $employee);
         $validatedData = $request->validated();
-        $job = $employer->jobs()->create($validatedData);
+        $job = $employee->jobs()->create($validatedData);
         return response()->json(['message' => 'Job Posted Successfully!'], 200);
     }
 
-    public function update(Request $request, Employee $employer, Job $job) {
+    public function update(Request $request, Employee $employee, Job $job) {
 
+        $this->authorize('update', $employee);
         $request->validate([
             'userId' => 'required',
             'status' => 'required',

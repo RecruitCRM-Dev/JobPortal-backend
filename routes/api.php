@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CandidateProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
@@ -9,12 +8,11 @@ use App\Http\Resources\RegisterResource;
 use App\Http\Controllers\MyJobController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\LatestJobController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\EmployerAuthController;
-use App\Http\Controllers\EmployerPostedJobsController;
-use App\Http\Controllers\EmployerProfileController;
+use App\Http\Controllers\UsersProfileController;
+use App\Http\Controllers\EmployeesAuthController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\UploadFileController;
+use App\Http\Controllers\EmployeesProfileController;
+use App\Http\Controllers\EmployeePostedJobsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,31 +34,57 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return new RegisterResource($request->user(),$token);
 });
 
+
+// Authentication
+
+
+// User - Job Seeker
 Route::post('register/user', [AuthController::class, 'register']);
 Route::post('login/user', [AuthController::class, 'login']);
 Route::post('logout/user', [AuthController::class, 'logout']);
 
+// Employee
+Route::post('register/employee', [EmployeesAuthController::class, 'register']);
+Route::post('login/employee', [EmployeesAuthController::class, 'login']);
+Route::post('logout/employee', [EmployeesAuthController::class, 'logout']);
+
+
+// Job lists
+ 
 Route::apiResource('jobs/latest',LatestJobController::class)->only(['index']);
 Route::apiResource('jobs', JobController::class)->only(['index','show']);
-Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
-Route::post('user/profile/update/{id}', [UserProfileController::class, 'updateUser']);
-Route::apiResource('myJobs',MyJobController::class)->only(['index']);
-Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
-Route::get('/user/{userId}/applied/{jobId}', [JobApplicationController::class, 'checkUserHasApplied']);
 
-//  Employer Routes 
+// User
+// Route::middleware('auth:sanctum')->group(function() {
+//     Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
+//     Route::post('user/profile/{profile}/update/', [UserProfileController::class, 'updateUser']);
+// });
 
-// Authentication
-Route::post('register/employer', [EmployerAuthController::class, 'register']);
-Route::post('login/employer', [EmployerAuthController::class, 'login']);
-Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
 
-Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index','update']);
-Route::post('employer/profile/update/{id}', [EmployerProfileController::class, 'updateEmployer']);
 
-// Route::put('employer/{employer}/job/{job}/user/{user}', [EmployerPostedJobsController::class, 'changeTheStatusOfCandidate']);
-Route::apiResource('employer.job', EmployerPostedJobsController::class)
+Route::middleware('auth:sanctum')->group(function() {
+    // Route::apiResource('employee/profile', EmployerProfileController::class)->except(['index','update']);
+    // Route::post('employees/profile/update/{id}', [EmployerProfileController::class, 'updateEmployer']);
+
+
+    // Jobs 
+    Route::apiResource('myJobs',MyJobController::class)->only(['index']);
+    Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
+    Route::get('/user/{userId}/applied/{jobId}', [JobApplicationController::class, 'checkUserHasApplied']);
+
+
+    // Users    
+    Route::post('users/{user}', [UsersProfileController::class, 'update'])->name('users.update');
+    Route::apiResource('users',UsersProfileController::class)->except(['update']);
+   
+    
+    // Employees
+    Route::apiResource('employees.jobs', EmployeePostedJobsController::class)
     ->scoped();
+    Route::post('employees/{employee}', [EmployeesProfileController::class, 'update'])->name('employees.update');
+    Route::apiResource('employees',EmployeesProfileController::class)->except(['update']);
+
+});
 
 
- 
+

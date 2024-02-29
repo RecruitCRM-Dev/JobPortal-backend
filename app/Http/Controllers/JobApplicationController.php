@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Job;
 class JobApplicationController extends Controller
 {
-   
+   //TODO: do authorization here 
     /**
      * Store a newly created resource in storage.
      */
