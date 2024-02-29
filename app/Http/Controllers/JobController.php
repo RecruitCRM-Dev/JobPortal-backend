@@ -15,15 +15,15 @@ class JobController extends Controller
     public function index(Request $request)
     {
 
-        $search = $request->input('search');
+        $jobType = $request->input('type');
+        $category = $request->input('category');
         $salary = $request->input('salary');
         $experience = $request->input('experience');
-        $category = $request->input('category');
         // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
         $jobs = Job::with('employee')
-            ->when($search, function ($query) use ($search) {
-                return $query->where('title', 'like', "%$search%");
+            ->when($jobType, function ($query) use ($jobType) {
+                return $query->whereIn('type', $jobType);
             })
             ->when($salary, function ($query) use ($salary) {
                 $query->where(function ($query) use ($salary) {
@@ -66,7 +66,6 @@ class JobController extends Controller
                             case 'senior':
                                 $query->orWhere('experience', '>', 15);
                                 break;
-                            // Add more cases as needed
                         }
                     }
                 });
@@ -74,8 +73,7 @@ class JobController extends Controller
             })
             ->when($category, function ($query) use ($category) {
                 return $query->whereIn('category', $category);
-            })
-            ->paginate(12);
+            })->get();
 
         // $perPage = $request->query('perPage', 12);
         // $currentPage = $request->query('page', 1);

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Scopes\FilterJobs;
+
 class Job extends Model
 {
     use HasFactory;
@@ -16,14 +17,14 @@ class Job extends Model
     // {
     //     static::addGlobalScope(new FilterJobs);
     // }
-    public static array $category =[
+    public static array $category = [
         'IT',
         'Finance',
         'Sales',
         'Marketing',
         'HR'
     ];
-    public static array $status =[
+    public static array $status = [
         'Active',
         'Expired'
     ];
@@ -35,7 +36,7 @@ class Job extends Model
         'Freelancing',
     ];
 
-        protected $fillable = [ 
+    protected $fillable = [
         'title',
         'description',
         'responsibilities',
@@ -44,13 +45,13 @@ class Job extends Model
         'location',
         'status'
     ];
-   
-    public function employee():BelongsTo
+
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
-    
-    public function jobapplication():HasMany
+
+    public function jobapplication(): HasMany
     {
         return $this->hasMany(JobApplication::class);
     }
@@ -62,7 +63,7 @@ class Job extends Model
             $query->where(function ($query) use ($search) {
                 $query->where('LOWER(title) like ?', ['%' . $search . '%'])
                     ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
-                    ->orWhereHas('employee', function($query) use($search){
+                    ->orWhereHas('employee', function ($query) use ($search) {
                         $query->whereRaw('LOWER(name) like ?', ['%' . $search . '%']);
                     });
             });
@@ -71,13 +72,14 @@ class Job extends Model
         })->when($filters['max_salary'] ?? null, function ($query, $maxSalary) {
             $query->where('salary', '<=', $maxSalary);
         })->when($filters['experience'] ?? null, function ($query, $experience) {
-            $query->where('experience', '<',$experience);
+            $query->where('experience', '<', $experience);
         })->when($filters['category'] ?? null, function ($query, $category) {
             $query->where('category', $category);
         });
     }
 
-    public function scopeLatest(Builder|QueryBuilder $query): void{
+    public function scopeLatest(Builder|QueryBuilder $query): void
+    {
         $query->orderBy('created_at', 'desc');
     }
 }
