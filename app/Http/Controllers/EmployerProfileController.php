@@ -22,8 +22,8 @@ class EmployerProfileController extends Controller
         return new EmployerProfileResource($employer);
     }
 
-    
-    //TODO:Refactor this updateEmployer part 
+
+    //TODO:Refactor this updateEmployer part
     public function updateEmployer(EmployerProfileRequest $request, string $id) {
         $employer = Employee::find($id);
 
@@ -31,17 +31,17 @@ class EmployerProfileController extends Controller
             return response()->json(['error' => 'Employer not found'], 404);
         }
 
-        $avatar = $request->file('avatar');
+        $profilePic = $request->file('profile_pic');
 
-        $data = $request->except(['avatar']);
+        $data = $request->except(['profile_pic']);
 
-        if ($avatar) {
-            $avatarPath = $avatar->store('avatar', 'public');
-            $data['profile_pic'] = "http://localhost:8000/storage/$avatarPath";
+        if ($profilePic) {
+            $profilePicPath = $profilePic->store('avatar', 'public');
+            $data['profile_pic'] = "http://localhost:8000/storage/$profilePicPath";
         }
 
         $employer->update($data);
-         
+
         return new EmployerProfileResource($employer);
     }
 
@@ -56,6 +56,6 @@ class EmployerProfileController extends Controller
         }
         Auth::logout();
         $user->delete();
-        return response()->json(['Employer deleted'],201);     
+        return response()->json(['Employer deleted'],201);
     }
 }

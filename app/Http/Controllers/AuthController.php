@@ -6,6 +6,7 @@ use App\Http\Resources\RegisterResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,9 +19,19 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-        $user = User::create($data);
 
-        $accessToken = $user->createToken('authToken')->plainTextToken;
+        $user_already_present = User::where('email', $request->email)->first();
+        if($user_already_present) {
+            return response()->json(['error' => 'Email already in use'], 401);
+        }
+
+        $employer_already_present = Employee::where('email', $request->email)->first();
+        if($employer_already_present) {
+            return response()->json(['error' => 'Email already in use'], 401);
+        }
+
+        $user = User::create($data);
+        $accessToken = $user->createToken('api-token')->plainTextToken;
 
         return new RegisterResource($user, $accessToken);
     }
