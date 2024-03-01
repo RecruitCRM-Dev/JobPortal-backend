@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Employer\EmployersAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
@@ -9,9 +10,8 @@ use App\Http\Controllers\MyJobController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\LatestJobController;
 use App\Http\Controllers\UsersProfileController;
-use App\Http\Controllers\EmployersAuthController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\EmployersProfileController;
+use App\Http\Controllers\Employer\EmployersProfileController;
 use App\Http\Controllers\EmployerPostedJobsController;
 
 /*
@@ -31,14 +31,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     if ($token && str_starts_with($token, 'Bearer ')) {
         $token = substr($token, 7); // Remove 'Bearer ' prefix
     }
-    return new RegisterResource($request->user(),$token);
+    return new RegisterResource($request->user(), $token);
 });
 
 
-Route::prefix('employer')->group(function(){
+Route::prefix('employer')->group(function () {
+
+    //Auth Routes
     Route::post('register', [EmployersAuthController::class, 'register']);
     Route::post('login', [EmployersAuthController::class, 'login']);
     Route::post('logout', [EmployersAuthController::class, 'logout']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        //Profile Routes
+        Route::get('profile/{employer}', [EmployersProfileController::class, 'show']);
+        Route::post('profile/{employer}', [EmployersProfileController::class, 'update']);
+    });
 });
 
 

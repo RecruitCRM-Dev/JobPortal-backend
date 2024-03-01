@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employer;
 
+use \App\Http\Controllers\Controller;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
 use App\Models\Employer;
@@ -19,12 +20,12 @@ class EmployersAuthController extends Controller
         $data = $request->validated();
 
         $user_already_present = User::where('email', $request->email)->first();
-        if($user_already_present) {
+        if ($user_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
         }
 
         $employer_already_present = Employer::where('email', $request->email)->first();
-        if($employer_already_present) {
+        if ($employer_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
         }
 

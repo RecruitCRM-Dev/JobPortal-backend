@@ -16,12 +16,11 @@ class EmployerProfileResource extends JsonResource
     {
         return [
             'data' => [
-                'type' => 'employer', 
+                'type' => 'employer',
                 'employer_id' => $this->id,
                 'attributes' => [
                     'name' => $this->name,
                     'description' => $this->description,
-                    'responsibilities' => $this->responsibilities,
                     'address' => $this->address,
                     'profile_pic' => $this->profile_pic,
                 ]
