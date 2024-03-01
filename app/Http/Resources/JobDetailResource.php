@@ -27,7 +27,7 @@ class JobDetailResource extends JsonResource
                     'salary' => $this->salary,
                     'status' => $this->status,
                     'location' => $this->location,
-                    'posted_by' => new EmployerProfileResource($this->employee),
+                    'posted_by' => new EmployerProfileResource($this->employer),
                     'posted_at' => $this->created_at->diffForHumans(),
                     'created_at' => $this->created_at
                 ]

@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use App\Http\Resources\EmployerProfileResource;
 
-class EmployeesProfileController extends Controller
+class EmployersProfileController extends Controller
 {
-    
+
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee)
-    {   
-        return new EmployerProfileResource($employee);
+    public function show(Employer $employer)
+    {
+        return new EmployerProfileResource($employer);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, Employer $employer)
     {
 
-        $this->authorize('update', $employee);
+        $this->authorize('update', $employer);
         $avatar = $request->file('avatar');
         $data = $request->except(['avatar']);
 
@@ -32,15 +32,15 @@ class EmployeesProfileController extends Controller
             $data['profile_pic'] = "http://localhost:8000/storage/$avatarPath";
         }
 
-        $employee->update($data);
-         
-        return new EmployerProfileResource($employee);
+        $employer->update($data);
+
+        return new EmployerProfileResource($employer);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(Employer $employer)
     {
         //
     }

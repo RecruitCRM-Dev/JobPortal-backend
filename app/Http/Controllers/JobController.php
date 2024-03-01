@@ -21,7 +21,7 @@ class JobController extends Controller
         $category = $request->input('category');
         // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
-        $jobs = Job::with('employee')->filter(['search' => $search,
+        $jobs = Job::with('employer')->filter(['search' => $search,
         'min_salary' => $min_salary,
         'max_salary' => $max_salary,
         'experience' => $experience,
@@ -43,7 +43,7 @@ class JobController extends Controller
 
     public function show(Request $request, $id)
     {
-        $job = Job::with('employee')->find($id);
+        $job = Job::with('employer')->find($id);
         if (!$job) {
             return response()->json(['error' => 'Job not found'], 404);
         }

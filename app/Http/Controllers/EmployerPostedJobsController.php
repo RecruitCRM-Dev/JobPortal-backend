@@ -4,50 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobPostingRequest;
 use App\Models\Job;
-use App\Models\Employee;
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use App\Models\JobApplication;
 use App\Http\Resources\JobDetailResource;
 
-class EmployeePostedJobsController extends Controller
+class EmployerPostedJobsController extends Controller
 {
-    
-    public function index(Employee $employee)
+
+    public function index(Employer $employer)
     {
-        $this->authorize('update', $employee);
-        $jobs = $employee->jobs()->paginate(10);
+        $this->authorize('update', $employer);
+        $jobs = $employer->jobs()->paginate(10);
         return JobDetailResource::collection($jobs);
     }
 
-    public function show(Employee $employee, Job $job)
-    {   
+    public function show(Employer $employer, Job $job)
+    {
 
-        $this->authorize('update', $employee);
+        $this->authorize('update', $employer);
         $users = JobApplication::with(['user'])
         ->where('job_id', $job->id)
         ->get();
-       
+
         // return JobApplicationResource::collection([$users, $job]);
         return response()->json(['job' => $job, 'users' => $users]);
     }
 
     //TODO: how to uniquely define a job ?
-    public function store(JobPostingRequest $request, Employee $employee) {
+    public function store(JobPostingRequest $request, Employer $employer) {
 
-        $this->authorize('update', $employee);
+        $this->authorize('update', $employer);
         $validatedData = $request->validated();
-        $job = $employee->jobs()->create($validatedData);
+        $job = $employer->jobs()->create($validatedData);
         return response()->json(['message' => 'Job Posted Successfully!'], 200);
     }
 
-    public function update(Request $request, Employee $employee, Job $job) {
+    public function update(Request $request, Employer $employer, Job $job) {
 
-        $this->authorize('update', $employee);
+        $this->authorize('update', $employer);
         $request->validate([
             'userId' => 'required',
             'status' => 'required',
         ]);
-    
+
         $userId = $request->input('userId');
         $status = $request->input('status');
 

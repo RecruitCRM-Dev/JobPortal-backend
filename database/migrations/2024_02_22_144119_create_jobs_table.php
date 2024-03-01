@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Employee;
+use App\Models\Employer;
 use App\Models\Job;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('location');
             $table->unsignedInteger('salary');
             $table->enum('status',Job::$status)->default('Active');
-            $table->foreignIdFor(Employee::class)->constrained();
+            $table->foreignIdFor(Employer::class)->constrained();
             $table->timestamps();
         });
     }

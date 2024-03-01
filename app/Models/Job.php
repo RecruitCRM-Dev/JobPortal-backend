@@ -35,7 +35,7 @@ class Job extends Model
         'Freelancing',
     ];
 
-        protected $fillable = [ 
+        protected $fillable = [
         'title',
         'description',
         'responsibilities',
@@ -44,12 +44,12 @@ class Job extends Model
         'location',
         'status'
     ];
-   
-    public function employee():BelongsTo
+
+    public function employer():BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employer::class);
     }
-    
+
     public function jobapplication():HasMany
     {
         return $this->hasMany(JobApplication::class);
@@ -62,7 +62,7 @@ class Job extends Model
             $query->where(function ($query) use ($search) {
                 $query->where('LOWER(title) like ?', ['%' . $search . '%'])
                     ->orWhere('LOWER(description) like ?', ['%' . $search . '%'])
-                    ->orWhereHas('employee', function($query) use($search){
+                    ->orWhereHas('employer', function($query) use($search){
                         $query->whereRaw('LOWER(name) like ?', ['%' . $search . '%']);
                     });
             });

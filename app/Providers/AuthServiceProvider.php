@@ -6,7 +6,7 @@ namespace App\Providers;
 
 use Log;
 use App\Models\User;
-use App\Models\Employee;
+use App\Models\Employer;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -19,7 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Models\User' => 'App\Policies\UserProfilePolicy',
-        'App\Models\Employee' => 'App\Policies\EmployeeProfilePolicy'
+        'App\Models\Employer' => 'App\Policies\EmployerProfilePolicy'
     ];
 
     /**

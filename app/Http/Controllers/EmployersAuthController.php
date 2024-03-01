@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
+use App\Models\Employer;
 use App\Models\User;
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
-class EmployeesAuthController extends Controller
+class EmployersAuthController extends Controller
 {
 
     public function register(RegisterRequest $request)
@@ -23,12 +23,12 @@ class EmployeesAuthController extends Controller
             return response()->json(['error' => 'Email already in use'], 401);
         }
 
-        $employer_already_present = Employee::where('email', $request->email)->first();
+        $employer_already_present = Employer::where('email', $request->email)->first();
         if($employer_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
         }
 
-        $employer = Employee::create($data);
+        $employer = Employer::create($data);
         $accessToken = $employer->createToken('api-token')->plainTextToken;
 
         return new RegisterResource($employer, $accessToken);
@@ -47,7 +47,7 @@ class EmployeesAuthController extends Controller
 
         // }
 
-        $employer = Employee::where('email', $request->email)->first();
+        $employer = Employer::where('email', $request->email)->first();
 
         if (!$employer) {
             return response()->json(['error' => 'Invalid credentials'], 401);
