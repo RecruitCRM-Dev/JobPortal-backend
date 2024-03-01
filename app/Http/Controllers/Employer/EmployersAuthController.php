@@ -42,26 +42,11 @@ class EmployersAuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        // if (Auth::attempt($credentials)) {
-        //     $employer = Employer::where('email', $request->email)->first();
-        //     $token = $employer->createToken('api-token')->plainTextToken;
-
-        //     return response()->json(['id' => $employer->id, 'access_token' => $token]);
-
-        // }
-
         $employer = Employer::where('email', $request->email)->first();
 
-        if (!$employer) {
+        if (!$employer || !Hash::check($request->password, $employer->password)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
-
-        if (!Hash::check($request->password, $employer->password)) {
-            return response()->json(['error' => 'Invalid password'], 401);
-        }
-
 
         $token = $employer->createToken('api-token')->plainTextToken;
 
@@ -80,8 +65,7 @@ class EmployersAuthController extends Controller
         $user = $request->user();
         if ($user) {
             $user->tokens()->where('name', 'api-token')->delete();
-        }
-        else{
+        } else {
             return response()->json(['error' => 'Error occured']);
         }
 

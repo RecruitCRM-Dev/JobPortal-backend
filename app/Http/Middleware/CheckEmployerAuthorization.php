@@ -27,7 +27,7 @@ class CheckEmployerAuthorization
 
         // Check if the authenticated employer is authorized to update the model
         if ($employer->id != $model->id) {
-            abort(403, 'Unauthorized action.');
+            abort(403, 'Unauthorized action');
         }
         return $next($request);
     }

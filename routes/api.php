@@ -4,7 +4,7 @@ use App\Http\Controllers\Employer\EmployersAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\AuthController;
 use App\Http\Resources\RegisterResource;
 use App\Http\Controllers\MyJobController;
 use App\Http\Controllers\FilterController;
@@ -12,7 +12,7 @@ use App\Http\Controllers\LatestJobController;
 use App\Http\Controllers\UsersProfileController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\Employer\EmployersProfileController;
-use App\Http\Controllers\EmployerPostedJobsController;
+use App\Http\Controllers\Employer\EmployerPostedJobsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +35,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::prefix('user')->group(function () {
+
+    //Auth Routes
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
+
+
 Route::prefix('employer')->group(function () {
 
     //Auth Routes
@@ -47,6 +56,7 @@ Route::prefix('employer')->group(function () {
         Route::get('profile/{employer}', [EmployersProfileController::class, 'show']);
         Route::post('profile/{employer}', [EmployersProfileController::class, 'update']);
 
+        //Job Post Routes
         Route::apiResource('{employer}/jobs', EmployerPostedJobsController::class);
     });
 });
