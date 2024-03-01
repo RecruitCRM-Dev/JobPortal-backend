@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckEmployerAuthorization
+class CheckUserAuthorization
 {
     /**
      * Handle an incoming request.
@@ -16,17 +16,18 @@ class CheckEmployerAuthorization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $employer = Auth::user();
+        $user = Auth::user();
 
-        // dd($employer->id);
+        // dd($request->route('user'));
 
-        // Retrieve the model (employer) from the request route
-        $model = $request->route('employer');
+        // Retrieve the model (user) from the request route
+        $model = $request->route('user');
+        // dd($model);
 
         // dd($model->id);
 
-        // Check if the authenticated employer is authorized to update the model
-        if ($employer->id != $model->id) {
+        // Check if the authenticated user is authorized to update the model
+        if ($user->id != $model->id) {
             abort(403, 'Unauthorized action');
         }
         return $next($request);

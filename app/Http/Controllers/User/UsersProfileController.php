@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserProfileRequest;
@@ -14,7 +15,7 @@ class UsersProfileController extends Controller
      * Display the specified resource.
      */
     public function show(User $user)
-    {   
+    {
         return response()->json(['user' => $user], 201);
     }
 
@@ -23,7 +24,7 @@ class UsersProfileController extends Controller
      */
     public function update(UserProfileRequest $request, User $user)
     {
-        $this->authorize('update', $user);
+        // $this->authorize('update', $user);
         $cv = $request->file('resume');
         $profile_pic = $request->file('profile_pic');
 
@@ -31,6 +32,7 @@ class UsersProfileController extends Controller
 
         if($request->has('skills')){
             $data['skills'] = implode(',', $request->input('skills'));
+            // dd($data['skills']);
         }
 
         if ($cv) {
@@ -46,14 +48,6 @@ class UsersProfileController extends Controller
         $user->update($data);
 
         return response()->json(['user' => $user], 201);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
     }
 }
 

@@ -3,14 +3,13 @@
 use App\Http\Controllers\Employer\EmployersAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JobController;
+use App\Http\Controllers\Job\JobController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Resources\RegisterResource;
-use App\Http\Controllers\MyJobController;
+use App\Http\Controllers\Job\JobApplicationController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\LatestJobController;
-use App\Http\Controllers\UsersProfileController;
-use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\User\UsersProfileController;
 use App\Http\Controllers\Employer\EmployersProfileController;
 use App\Http\Controllers\Employer\EmployerPostedJobsController;
 
@@ -34,6 +33,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return new RegisterResource($request->user(), $token);
 });
 
+//List All Jobs
+Route::get('jobs/latest',[LatestJobController::class, 'index']);
+Route::apiResource('jobs', JobController::class)->only(['index','show']);
 
 Route::prefix('user')->group(function () {
 
@@ -41,6 +43,19 @@ Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::middleware(['auth:sanctum', 'check_user_authorization'])->group(function () {
+        //Profile Routes
+        Route::get('profile/{user}', [UsersProfileController::class, 'show']);
+        Route::post('profile/{user}', [UsersProfileController::class, 'update']);
+
+        //Job Post Routes
+        Route::apiResource('{user}/jobs', JobApplicationController::class);
+        // api/user/{user}/jobs/{job} -> checking User has applied or not -> GEt
+        // api/user/{user}/jobs -> list of all jobs that user has applied ->GET
+        // api/user/{user}/jobs ->job apply -> pOST
+
+    });
 });
 
 

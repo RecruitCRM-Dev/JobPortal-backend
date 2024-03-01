@@ -20,6 +20,7 @@ class EmployerProfileResource extends JsonResource
                 'employer_id' => $this->id,
                 'attributes' => [
                     'name' => $this->name,
+                    'email' => $this->email,
                     'description' => $this->description,
                     'address' => $this->address,
                     'profile_pic' => $this->profile_pic,
