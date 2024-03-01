@@ -42,10 +42,12 @@ Route::prefix('employer')->group(function () {
     Route::post('login', [EmployersAuthController::class, 'login']);
     Route::post('logout', [EmployersAuthController::class, 'logout']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'check_employer_authorization'])->group(function () {
         //Profile Routes
         Route::get('profile/{employer}', [EmployersProfileController::class, 'show']);
         Route::post('profile/{employer}', [EmployersProfileController::class, 'update']);
+
+        Route::apiResource('{employer}/jobs', EmployerPostedJobsController::class);
     });
 });
 

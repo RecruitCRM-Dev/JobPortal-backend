@@ -16,7 +16,7 @@ class EmployersProfileController extends Controller
      */
     public function show(Employer $employer)
     {
-        $this->authorize('show', $employer);
+        // $this->authorize('show', $employer);
         return new EmployerProfileResource($employer);
     }
 
@@ -26,7 +26,7 @@ class EmployersProfileController extends Controller
     public function update(Request $request, Employer $employer)
     {
 
-        $this->authorize('update', $employer);
+        // $this->authorize('update', $employer);
         $profilePic = $request->file('profile_pic');
         $data = $request->except(['profile_pic']);
 

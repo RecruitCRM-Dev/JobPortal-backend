@@ -14,6 +14,10 @@ use App\Http\Requests\RegisterRequest;
 
 class EmployersAuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['logout']);
+    }
 
     public function register(RegisterRequest $request)
     {
@@ -73,7 +77,13 @@ class EmployersAuthController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        $user = $request->user();
+        if ($user) {
+            $user->tokens()->where('name', 'api-token')->delete();
+        }
+        else{
+            return response()->json(['error' => 'Error occured']);
+        }
 
         return response()->json(['message' => 'Successfully logged out']);
     }
