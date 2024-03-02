@@ -23,6 +23,10 @@ class EmployerPostedJobsController extends Controller
 
     public function show(Employer $employer, Job $job)
     {
+        //checking that employer try to access other employer posted jobs or not?
+        if ($job->employer_id !== $employer->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
         // $this->authorize('update', $employer);
         $users = JobApplication::with(['user'])
@@ -52,6 +56,10 @@ class EmployerPostedJobsController extends Controller
             'status' => 'required',
         ]);
 
+        if ($job->employer_id !== $employer->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         $userId = $request->input('userId');
         $status = $request->input('status');
 
@@ -65,6 +73,10 @@ class EmployerPostedJobsController extends Controller
         $jobApplication = JobApplication::where('job_id', $job->id)
             ->where('user_id', $userId)
             ->first();
+
+        if(!$jobApplication){
+            return response()->json(['message'=> 'User has not applied for this job'], 404);
+        }
 
         $jobApplication->status = $status;
         $jobApplication->save();

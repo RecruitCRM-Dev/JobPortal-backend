@@ -98,4 +98,11 @@ class JobController extends Controller
         }
         return new JobDetailResource($job);
     }
+
+    public function getLatestJobs(Request $request)
+    {
+        $jobs = Job::latest()->limit(7)->get();
+        // return response()->json(['jobs' => $jobs], 200);
+        return JobDetailResource::collection($jobs);
+    }
 }

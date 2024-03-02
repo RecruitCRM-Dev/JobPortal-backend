@@ -53,6 +53,12 @@ class JobApplicationController extends Controller
     public function store(JobApplicationRequest $request, User $user)
     {
         $validatedData = $request->validated();
+
+        //check that user itself is applying
+        if($request->input('user_id') != $user->id){
+            return response()->json(['message' => 'Unauthorized action'], 401);
+        }
+
         $job_id = $validatedData['job_id'];
         $job = Job::find($job_id);
 

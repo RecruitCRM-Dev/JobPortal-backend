@@ -7,8 +7,6 @@ use App\Http\Controllers\Job\JobController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Resources\RegisterResource;
 use App\Http\Controllers\Job\JobApplicationController;
-use App\Http\Controllers\FilterController;
-use App\Http\Controllers\LatestJobController;
 use App\Http\Controllers\User\UsersProfileController;
 use App\Http\Controllers\Employer\EmployersProfileController;
 use App\Http\Controllers\Employer\EmployerPostedJobsController;
@@ -34,8 +32,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //List All Jobs
-Route::get('jobs/latest',[LatestJobController::class, 'index']);
-Route::apiResource('jobs', JobController::class)->only(['index','show']);
+Route::get('jobs/latest', [JobController::class, 'getLatestJobs']);
+
+Route::apiResource('jobs', JobController::class)->only(['index', 'show']);
 
 Route::prefix('user')->group(function () {
 
