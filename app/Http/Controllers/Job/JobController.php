@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Job;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\JobCollection;
 use App\Http\Resources\JobDetailResource;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class JobController extends Controller
         $experience = $request->input('experience');
         // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
-        $jobs = Job::with('employee')
+        $jobs = Job::with('employer')
             ->when($jobType, function ($query) use ($jobType) {
                 return $query->whereIn('type', $jobType);
             })
@@ -91,10 +92,17 @@ class JobController extends Controller
 
     public function show(Request $request, $id)
     {
-        $job = Job::with('employee')->find($id);
+        $job = Job::with('employer')->find($id);
         if (!$job) {
-            return response()->json(['error' => 'Job not found'], 404);
+            return response()->json(['error' => 'Job not found..'], 404);
         }
         return new JobDetailResource($job);
+    }
+
+    public function getLatestJobs(Request $request)
+    {
+        $jobs = Job::latest()->limit(7)->get();
+        // return response()->json(['jobs' => $jobs], 200);
+        return JobDetailResource::collection($jobs);
     }
 }

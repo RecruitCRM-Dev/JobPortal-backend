@@ -46,9 +46,9 @@ class Job extends Model
         'status'
     ];
 
-    public function employee(): BelongsTo
+    public function employer(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employer::class);
     }
 
     public function jobapplication(): HasMany

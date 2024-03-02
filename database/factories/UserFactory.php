@@ -32,7 +32,6 @@ class UserFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'role'=>fake()->randomElement(User::$role),
             'address' => fake()->address(),
-            'resume' => fake()->paragraph(),
             'experience' => fake()->numberBetween(0,5),
             'education' => fake()->paragraph(),
             'skills' => implode(',', fake()->randomElements(User::$skills, rand(1, count(User::$skills)))),

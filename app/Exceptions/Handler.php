@@ -3,6 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +29,16 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            return response()->json(['error' => 'Not Found'], 404);
+        });
+
+        $this->renderable(function (AccessDeniedHttpException|HttpException $e, Request $request) {
+            return response()->json(['error' => 'Unauthorized action'], 401);
+        });
+
+        $this->renderable(function (RouteNotFoundException $e, Request $request) {
+            return response()->json(['error' => 'Error Occured'], 404);
         });
     }
 }

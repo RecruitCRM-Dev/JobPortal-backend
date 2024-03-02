@@ -23,9 +23,9 @@ class UserProfileResource extends JsonResource
                     'name' => $this->name,
                     'email' => $this->email,
                     'role'=> $this->role,
-                    'address' => 'string|max:255', 
-                    'resume' => 'string|max:255', 
-                    'experience' => 'integer|min:0', 
+                    'address' => $this->address, 
+                    'resume' => $this->resume, 
+                    'experience' => $this->experience, 
                 ]
             ],
         ];

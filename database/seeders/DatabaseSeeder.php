@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
     {
 
         \App\Models\User::factory(100)->create();
-        \App\Models\Employee::factory(30)->create();
-        $employees = \App\Models\Employee::all()->shuffle();
+        \App\Models\Employer::factory(30)->create();
+        $employers = \App\Models\Employer::all()->shuffle();
         for($i=0;$i<66;$i++)
         {
             \App\Models\Job::factory()->create([
-                    'employee_id' => $employees->random()->id
+                    'employer_id' => $employers->random()->id
             ]);
-            
+
         }
         $users = \App\Models\User::all()->shuffle();
         for($i=0;$i<100;$i++)
@@ -31,11 +31,11 @@ class DatabaseSeeder extends Seeder
             $jobs = \App\Models\Job::inRandomOrder()->take($cnt)->get();
             for($j=0;$j<$cnt;$j++)
             {
-                $job = $jobs->pop();  
+                $job = $jobs->pop();
                 \App\Models\JobApplication::factory()->create([
                     'job_id' => $job->id,
                     'user_id' => $user->id
-                ]); 
+                ]);
             }
 
         }

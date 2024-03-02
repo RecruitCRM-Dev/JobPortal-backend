@@ -22,7 +22,6 @@ class EmployerProfileResource extends JsonResource
                     'name' => $this->name,
                     'email' => $this->email,
                     'description' => $this->description,
-                    'responsibilities' => $this->responsibilities,
                     'address' => $this->address,
                     'profile_pic' => $this->profile_pic,
                 ]

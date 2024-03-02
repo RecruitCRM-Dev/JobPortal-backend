@@ -1,20 +1,15 @@
 <?php
 
-use App\Http\Controllers\CandidateProfileController;
+use App\Http\Controllers\Employer\EmployersAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JobController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Job\JobController;
+use App\Http\Controllers\User\AuthController;
 use App\Http\Resources\RegisterResource;
-use App\Http\Controllers\MyJobController;
-use App\Http\Controllers\FilterController;
-use App\Http\Controllers\LatestJobController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\EmployerAuthController;
-use App\Http\Controllers\EmployerPostedJobsController;
-use App\Http\Controllers\EmployerProfileController;
-use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\UploadFileController;
+use App\Http\Controllers\Job\JobApplicationController;
+use App\Http\Controllers\User\UsersProfileController;
+use App\Http\Controllers\Employer\EmployersProfileController;
+use App\Http\Controllers\Employer\EmployerPostedJobsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,34 +28,52 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     if ($token && str_starts_with($token, 'Bearer ')) {
         $token = substr($token, 7); // Remove 'Bearer ' prefix
     }
-    return new RegisterResource($request->user(),$token);
+    return new RegisterResource($request->user(), $token);
 });
 
-Route::post('register/user', [AuthController::class, 'register']);
-Route::post('login/user', [AuthController::class, 'login']);
-Route::post('logout/user', [AuthController::class, 'logout']);
+//List All Jobs
+Route::get('jobs/latest', [JobController::class, 'getLatestJobs']);
 
-Route::apiResource('jobs/latest',LatestJobController::class)->only(['index']);
-Route::apiResource('jobs', JobController::class)->only(['index','show']);
-Route::apiResource('user/profile', UserProfileController::class)->only(['show','update','destroy']);
-Route::post('user/profile/update/{id}', [UserProfileController::class, 'updateUser']);
-Route::apiResource('myJobs',MyJobController::class)->only(['index']);
-Route::apiResource('job/application',JobApplicationController::class)->only(['store','destroy']);
-Route::get('/user/{userId}/applied/{jobId}', [JobApplicationController::class, 'checkUserHasApplied']);
+Route::apiResource('jobs', JobController::class)->only(['index', 'show']);
 
-//  Employer Routes 
+Route::prefix('user')->group(function () {
 
-// Authentication
-Route::post('register/employer', [EmployerAuthController::class, 'register']);
-Route::post('login/employer', [EmployerAuthController::class, 'login']);
-Route::post('logout/employer', [EmployerAuthController::class, 'logout']);
+    //Auth Routes
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
-Route::apiResource('employer/profile', EmployerProfileController::class)->except(['index','update']);
-Route::post('employer/profile/update/{id}', [EmployerProfileController::class, 'updateEmployer']);
+    Route::middleware(['auth:sanctum', 'check_user_authorization'])->group(function () {
+        //Profile Routes
+        Route::get('profile/{user}', [UsersProfileController::class, 'show']);
+        Route::post('profile/{user}', [UsersProfileController::class, 'update']);
 
-// Route::put('employer/{employer}/job/{job}/user/{user}', [EmployerPostedJobsController::class, 'changeTheStatusOfCandidate']);
-Route::apiResource('employer.job', EmployerPostedJobsController::class)
-    ->scoped();
+        //Job Post Routes
+        Route::apiResource('{user}/jobs', JobApplicationController::class);
+        // api/user/{user}/jobs/{job} -> checking User has applied or not -> GEt
+        // api/user/{user}/jobs -> list of all jobs that user has applied ->GET
+        // api/user/{user}/jobs ->job apply -> pOST
+
+    });
+});
 
 
- 
+Route::prefix('employer')->group(function () {
+
+    //Auth Routes
+    Route::post('register', [EmployersAuthController::class, 'register']);
+    Route::post('login', [EmployersAuthController::class, 'login']);
+    Route::post('logout', [EmployersAuthController::class, 'logout']);
+
+    Route::middleware(['auth:sanctum', 'check_employer_authorization'])->group(function () {
+        //Profile Routes
+        Route::get('profile/{employer}', [EmployersProfileController::class, 'show']);
+        Route::post('profile/{employer}', [EmployersProfileController::class, 'update']);
+
+        //Job Post Routes
+        Route::apiResource('{employer}/jobs', EmployerPostedJobsController::class);
+    });
+});
+
+
+
