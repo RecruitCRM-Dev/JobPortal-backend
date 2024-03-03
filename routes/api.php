@@ -55,7 +55,7 @@ Route::prefix('user')->group(function () {
         Route::get('profile/{user}', [UsersProfileController::class, 'show']);
         Route::post('profile/{user}', [UsersProfileController::class, 'update']);
         Route::get('profile/{user}/insights', [UserInsights::class, 'getInsights']);
-        Route::get('user/{user}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
+        Route::get('{user}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
 
 
         //Job Post Routes
@@ -93,4 +93,3 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::post('forgot-password', [PasswordResetController::class, 'sendResetPasswordLink']);
 Route::post('/reset-password/{token}', [PasswordResetController::class, 'reset']);
 
-Route::get('user/{user_id}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
