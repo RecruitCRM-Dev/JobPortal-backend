@@ -28,7 +28,7 @@ class StatusUpdateNotification extends Notification
      */
     public function via(object $notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -36,10 +36,18 @@ class StatusUpdateNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $message = sprintf(
+            'Your status for the job role %s has been changed to %s.',
+            $this->jobApplication->job->title,
+            $this->jobApplication->status
+        );
+
+        $url = 'http://127.0.0.1:5173/job/' . $this->jobApplication->job->id . '/apply';
+    
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line($message)
+            ->action('View Job', $url)
+            ->line('Thank you for applying!');
     }
 
     /**
@@ -51,6 +59,8 @@ class StatusUpdateNotification extends Notification
     {
         return [
             'status' => $this->jobApplication->status,
+            'job_id' =>$this->jobApplication->job->id,
+            'job_profile' =>$this->jobApplication->job->employer->profile_pic,
             'job_title' => $this->jobApplication->job->title,
             'message' => "Your application status for " . $this->jobApplication->job->title . " has been updated to " . $this->jobApplication->status, 
         ];
