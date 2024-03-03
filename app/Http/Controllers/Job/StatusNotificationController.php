@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Notification;
 
 class StatusNotificationController extends Controller
 {
-    public function getLatestNotifications(Request $request, $user_id)
+    public function getLatestNotifications(Request $request, $user)
     {
-        $user = User::find($user_id);
+        $user = User::find($user);
 
         $notifications = $user->notifications()
         ->orderBy('created_at', 'desc')
