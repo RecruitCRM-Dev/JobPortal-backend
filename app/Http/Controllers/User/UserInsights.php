@@ -15,13 +15,15 @@ class UserInsights extends Controller
         $id = $user->id;
         $jobss = JobApplication::with('job:id,category,type')->where('user_id', $id)
             ->get();
+
+        return response()->json($jobss);
  
         foreach (JobApplication::$status as $job_status) {
             $statusCount[$job_status] = 0;
         }
         
-        foreach (Job::$category as $job_status) {
-            $categoryCount[$job_status] = 0;
+        foreach (Job::$category as $job_category) {
+            $categoryCount[$job_category] = 0;
         }
         
         foreach (Job::$jobType as $job_type) {

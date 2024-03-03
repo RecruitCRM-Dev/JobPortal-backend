@@ -42,6 +42,7 @@ class Job extends Model
         'responsibilities',
         'experience',
         'category',
+        'type',
         'salary',
         'location',
         'status'
