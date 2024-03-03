@@ -7,10 +7,12 @@ use App\Http\Requests\JobPostingRequest;
 use App\Models\Job;
 use App\Models\Employer;
 use App\Models\User;
+use App\Notifications\StatusNotification;
+use App\Notifications\StatusUpdateNotification;
 use Illuminate\Http\Request;
 use App\Models\JobApplication;
 use App\Http\Resources\JobDetailResource;
-
+use Illuminate\Support\Facades\Notification;
 class EmployerPostedJobsController extends Controller
 {
 
@@ -80,6 +82,7 @@ class EmployerPostedJobsController extends Controller
 
         $jobApplication->status = $status;
         $jobApplication->save();
+        Notification::send($user, new StatusUpdateNotification($jobApplication));
         return response()->json(['message' => 'Status changed successfully.'], 200);
     }
 }

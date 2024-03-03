@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Employer\EmployersAuthController;
-use App\Http\Controllers\User\UserInsights;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Job\JobController;
@@ -80,4 +79,4 @@ Route::prefix('employer')->group(function () {
 });
 
 
-
+Route::get('user/{user_id}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
