@@ -5,6 +5,8 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\VerificationController;
 use App\Mail\PasswordResetLink;
 use App\Models\User;
+use App\Http\Controllers\Job\StatusNotificationController;
+use App\Http\Controllers\User\UserInsights;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +54,9 @@ Route::prefix('user')->group(function () {
         //Profile Routes
         Route::get('profile/{user}', [UsersProfileController::class, 'show']);
         Route::post('profile/{user}', [UsersProfileController::class, 'update']);
+        Route::get('profile/{user}/insights', [UserInsights::class, 'getInsights']);
+        Route::get('user/{user}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
+
 
         //Job Post Routes
         Route::apiResource('{user}/jobs', JobApplicationController::class);
@@ -88,3 +93,4 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::post('forgot-password', [PasswordResetController::class, 'sendResetPasswordLink']);
 Route::post('/reset-password/{token}', [PasswordResetController::class, 'reset']);
 
+Route::get('user/{user_id}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
