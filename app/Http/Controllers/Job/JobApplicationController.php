@@ -59,6 +59,7 @@ class JobApplicationController extends Controller
             return response()->json(['message' => 'Unauthorized action'], 401);
         }
 
+
         $job_id = $validatedData['job_id'];
         $job = Job::find($job_id);
 

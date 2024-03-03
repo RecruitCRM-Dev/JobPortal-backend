@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Employer\EmployersAuthController;
+use App\Http\Controllers\User\UserInsights;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Job\JobController;
@@ -47,6 +48,9 @@ Route::prefix('user')->group(function () {
         //Profile Routes
         Route::get('profile/{user}', [UsersProfileController::class, 'show']);
         Route::post('profile/{user}', [UsersProfileController::class, 'update']);
+        Route::get('profile/{user}/insights', [UserInsights::class, 'getInsights']);
+
+ 
 
         //Job Post Routes
         Route::apiResource('{user}/jobs', JobApplicationController::class);
