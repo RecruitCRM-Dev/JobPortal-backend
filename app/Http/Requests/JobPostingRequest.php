@@ -27,6 +27,7 @@ class JobPostingRequest extends FormRequest
             'description' =>  'required|string',
             'responsibilities' => 'required|string',
             'category' => 'required|in:' . implode(',', Job::$category),
+            'experience' => 'required|numeric|max:30',
             'salary' => 'required|numeric|min:5000',
             'location' => 'required|string',
             'type' => 'required|in:' . implode(',', Job::$jobType),

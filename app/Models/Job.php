@@ -40,6 +40,7 @@ class Job extends Model
         'title',
         'description',
         'responsibilities',
+        'experience',
         'category',
         'salary',
         'location',

@@ -34,6 +34,7 @@ class EmployersAuthController extends Controller
         }
 
         $employer = Employer::create($data);
+        $employer->sendEmailVerificationNotification();
         $accessToken = $employer->createToken('api-token')->plainTextToken;
 
         return new RegisterResource($employer, $accessToken);
@@ -46,6 +47,10 @@ class EmployersAuthController extends Controller
 
         if (!$employer || !Hash::check($request->password, $employer->password)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        if(!$employer->hasVerifiedEmail()){
+            return response()->json(['error' => 'Please verify your email'], 401);
         }
 
         $token = $employer->createToken('api-token')->plainTextToken;
