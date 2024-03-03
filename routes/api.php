@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\Employer\EmployersAuthController;
+use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\VerificationController;
+use App\Mail\PasswordResetLink;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Job\JobController;
 use App\Http\Controllers\User\AuthController;
@@ -75,5 +80,11 @@ Route::prefix('employer')->group(function () {
     });
 });
 
+//Email Verification routes
+Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
+//Password Reset Routes
+Route::post('forgot-password', [PasswordResetController::class, 'sendResetPasswordLink']);
+Route::post('/reset-password/{token}', [PasswordResetController::class, 'reset']);
 

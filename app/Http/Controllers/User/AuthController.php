@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +39,9 @@ class AuthController extends Controller
         }
 
         $user = User::create($data);
+        // dd($user);
+        $user->sendEmailVerificationNotification();
+        // Mail::to($user->email)->send(new WelcomeMail($title, $body));
 
         $accessToken = $user->createToken('api-token')->plainTextToken;
 
@@ -49,6 +53,10 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        if(!$user->hasVerifiedEmail()){
+            return response()->json(['error' => 'Please verify your email'], 401);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
