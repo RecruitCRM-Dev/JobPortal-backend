@@ -1,11 +1,10 @@
 <?php
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+
 use App\Models\Employer;
+use App\Models\Job;
 use Illuminate\Foundation\Testing\TestCase;
 
-class EmployerProfileControllerTest extends TestCase
+class EmployerPostedJobsControllerTest extends TestCase
 {
   protected static ?string $password;
   protected $token;
@@ -40,23 +39,37 @@ class EmployerProfileControllerTest extends TestCase
     $this->token = $response->json('data')['token'];
 
     }
-    public function testGetEmployerProfile()
+    public function testGetCandiatesAppliedToEmployerPostedJob()
     {
      $this->testLogin();
       $header = ['Authorization' => 'Bearer ' . $this->token];
-      
-      $response = $this->withHeaders($header)->getJson('api/employer/profile/'.$this->employer->id);
+      $jobs = Job::where('employer_id',$this->employer->id)->get();
+      $job = $jobs->pop();
+      $response = $this->withHeaders($header)->getJson('/api/employer/'.$this->employer->id.'/jobs/'.$job->id);
       $response->assertStatus(200);
     }
-    public function testUpdateEmployerProfile()
+    public function testGetEmployerPostedJobs()
+    {
+      $this->testLogin();
+      $header = ['Authorization' => 'Bearer ' . $this->token];
+      $response = $this->withHeaders($header)->getJson('api/employer/'.$this->employer->id.'/jobs');
+      $response->assertStatus(200);
+    }
+    public function testEmployerPostAJob()
     {
       $data = [
-        "name"=>fake()->name,
-        "description" => fake()->sentence
+        "title"=> "Product Manager 2",
+    "description"=> "Exciting opportunity for a skilled product manager.",
+    "responsibilities"=> "Lead product development and oversee project timelines.",
+    "category"=> "IT",
+    "experience"=> 5,
+    "salary"=> 75000,
+    "location"=> "San Francisco",
+    "type"=> "Internship"
       ];
       $this->testLogin();
       $header = ['Authorization' => 'Bearer ' . $this->token];
-      $response = $this->withHeaders($header)->postJson('api/employer/profile/'.$this->employer->id);
+      $response = $this->withHeaders($header)->postJson('api/employer/'.$this->employer->id.'/jobs',$data);
       $response->assertStatus(200);
     }
     
