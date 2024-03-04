@@ -16,6 +16,7 @@ class UsersProfileController extends Controller
      */
     public function show(User $user)
     {
+        //dd($user);
         return response()->json(['user' => $user], 201);
     }
 
