@@ -60,7 +60,6 @@ class StatusUpdateNotification extends Notification
         return [
             'status' => $this->jobApplication->status,
             'job_id' =>$this->jobApplication->job->id,
-            'job_profile' =>$this->jobApplication->job->employer->profile_pic,
             'job_title' => $this->jobApplication->job->title,
             'message' => "Your application status for " . $this->jobApplication->job->title . " has been updated to " . $this->jobApplication->status, 
         ];

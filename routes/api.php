@@ -94,4 +94,3 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::post('forgot-password', [PasswordResetController::class, 'sendResetPasswordLink']);
 Route::post('/reset-password/{token}', [PasswordResetController::class, 'reset']);
 
-Route::get('user/{user_id}/notifications', [StatusNotificationController::class, 'getLatestNotifications']);

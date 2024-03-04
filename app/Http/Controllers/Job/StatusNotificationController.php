@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Job;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NotificationResource;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -15,8 +16,7 @@ class StatusNotificationController extends Controller
     {
         $notifications = $user->notifications()
         ->orderBy('created_at', 'desc')
-        ->limit(5)
         ->get();
-        return response()->json(['notifications' => $notifications]);
+        return response()->json(['notifications' => NotificationResource::collection($notifications)]);
     }
 }
