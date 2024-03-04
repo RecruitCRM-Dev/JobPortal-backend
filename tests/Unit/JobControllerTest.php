@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Job;
 use Illuminate\Foundation\Testing\TestCase;
 
 class JobControllerTest extends TestCase
@@ -39,7 +40,10 @@ class JobControllerTest extends TestCase
     }
     public function testShow()
     {
-      $response = $this->get('/api/jobs/1');
+      $jobs = Job::all()->shuffle();
+      $job = $jobs->pop();
+      //dd($job->id);
+      $response = $this->get('/api/jobs/'.$job->id);
       
       $response->assertStatus(200)
       ->assertJsonStructure([

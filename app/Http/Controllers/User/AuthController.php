@@ -25,8 +25,8 @@ class AuthController extends Controller
     }
     public function register(RegisterRequest $request)
     {
+        //dd($request);
         $data = $request->validated();
-
         $user_already_present = User::where('email', $request->email)->first();
         if ($user_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
