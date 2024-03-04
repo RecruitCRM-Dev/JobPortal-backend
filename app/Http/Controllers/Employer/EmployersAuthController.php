@@ -62,6 +62,7 @@ class EmployersAuthController extends Controller
      */
     public function logout(Request $request)
     {
+        //dd($request->user());
         $user = $request->user();
         if ($user) {
             $user->tokens()->where('name', 'api-token')->delete();
