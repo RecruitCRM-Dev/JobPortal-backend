@@ -85,4 +85,25 @@ class EmployerPostedJobsController extends Controller
         Notification::send($user, new StatusUpdateNotification($jobApplication));
         return response()->json(['message' => 'Status changed successfully.'], 200);
     }
+
+    public function updateJobStatus(Request $request, Employer $employer, Job $job)
+    {
+        $job_status = Job::$status;
+        $request->validate([
+            'status' => ['required', 'in:' . implode(',', $job_status)],
+        ]);
+
+        if ($job->employer_id !== $employer->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $status = $request->input('status');
+
+        $job_ = Job::where('id', $job->id)
+            ->first();
+
+        $job_->status = $status;
+        $job_->save();
+        return response()->json(['message' => 'Job Status changed successfully.'], 200);
+    }
 }

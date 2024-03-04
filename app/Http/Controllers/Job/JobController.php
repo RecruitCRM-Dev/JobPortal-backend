@@ -23,6 +23,7 @@ class JobController extends Controller
         // $filters = $request->only('search', 'min_salary', 'max_salary', 'experience', 'category');
 
         $jobs = Job::with('employer')
+            ->where('status', 'Active') 
             ->when($jobType, function ($query) use ($jobType) {
                 return $query->whereIn('type', $jobType);
             })
@@ -101,7 +102,7 @@ class JobController extends Controller
 
     public function getLatestJobs(Request $request)
     {
-        $jobs = Job::latest()->limit(7)->get();
+        $jobs = Job::latest()->where('status', 'Active')->limit(7)->get();
         // return response()->json(['jobs' => $jobs], 200);
         return JobDetailResource::collection($jobs);
     }
