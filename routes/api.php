@@ -50,12 +50,13 @@ Route::prefix('user')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
 
+    Route::middleware('auth:sanctum')->get('profile/{user}', [UsersProfileController::class, 'show']);
+
     Route::middleware(['auth:sanctum', 'check_user_authorization'])->group(function () {
         //Profile Routes
-        Route::get('profile/{user}', [UsersProfileController::class, 'show']);
         Route::post('profile/{user}', [UsersProfileController::class, 'update']);
         Route::get('profile/{user}/insights', [UserInsights::class, 'getInsights']);
-        Route::get('{user}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
+        Route::get('{user}/notifications', [StatusNotificationController::class, 'getLatestNotifications']);
 
 
         //Job Post Routes
