@@ -7,10 +7,13 @@ use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
 use App\Models\Employer;
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\URL;
 
 class EmployersAuthController extends Controller
 {
@@ -22,7 +25,6 @@ class EmployersAuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-
         $user_already_present = User::where('email', $request->email)->first();
         if ($user_already_present) {
             return response()->json(['error' => 'Email already in use'], 401);
@@ -34,6 +36,17 @@ class EmployersAuthController extends Controller
         }
 
         $employer = Employer::create($data);
+        VerifyEmail::createUrlUsing(function ($notifiable) {
+            return URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                    'role' => 'employer', // Default role to Employer if not provided
+                ]
+            );
+        });
         $employer->sendEmailVerificationNotification();
         $accessToken = $employer->createToken('api-token')->plainTextToken;
 

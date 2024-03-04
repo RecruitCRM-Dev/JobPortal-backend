@@ -10,18 +10,16 @@ class VerificationController extends Controller
 {
     public function verify(Request $request, $user_id)
     {
+        $role = $request->query('role');
         if (!$request->hasValidSignature()) {
             return response()->json(["msg" => "Invalid/Expired url provided."], 401);
         }
 
         // dd($user_id);
 
-        $user = User::find($user_id);
-        $employer = Employer::find($user_id);
+        if ($role == 'candidate') {
+            $user = User::find($user_id);
 
-        // dd($user,$employer);
-
-        if ($user) {
             if (!$user->hasVerifiedEmail()) {
                 $user->markEmailAsVerified();
 
@@ -29,7 +27,9 @@ class VerificationController extends Controller
             } else {
                 return redirect(env('FRONTEND_URL', 'http://localhost:5173') . '/login?message=Email already verified');
             }
-        } else if ($employer) {
+        } else if ($role == 'employer') {
+            $employer = Employer::find($user_id);
+
             if (!$employer->hasVerifiedEmail()) {
                 $employer->markEmailAsVerified();
 
