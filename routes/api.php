@@ -81,6 +81,7 @@ Route::prefix('employer')->group(function () {
         Route::get('profile/{employer}', [EmployersProfileController::class, 'show']);
         Route::post('profile/{employer}', [EmployersProfileController::class, 'update']);
 
+        Route::put('{employer}/jobs/{job}/status', [EmployerPostedJobsController::class, 'updateJobStatus']);
         //Job Post Routes
         Route::apiResource('{employer}/jobs', EmployerPostedJobsController::class);
     });

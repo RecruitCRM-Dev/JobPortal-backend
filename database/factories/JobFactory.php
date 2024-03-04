@@ -26,7 +26,7 @@ class JobFactory extends Factory
             'experience' => fake()->numberBetween(0,20),
             'location' => fake()->city(),
             'salary'=> fake()->numberBetween(5_000, 4_000_000),
-            'status'=> fake()->randomElement(Job::$status)
+            'status'=> 'Active'
         ];
     }
 }
