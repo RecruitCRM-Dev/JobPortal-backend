@@ -11,10 +11,8 @@ use Illuminate\Support\Facades\Notification;
 
 class StatusNotificationController extends Controller
 {
-    public function getLatestNotifications(Request $request, $user)
+    public function getLatestNotifications(Request $request, User $user)
     {
-        $user = User::find($user);
-
         $notifications = $user->notifications()
         ->orderBy('created_at', 'desc')
         ->limit(5)
