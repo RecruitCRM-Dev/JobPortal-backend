@@ -9,8 +9,11 @@
 
 ```
 git clone https://github.com/RecruitCRM-Dev/JobPortal-backend.git
+
 composer install
+
 npm install
+
 cp .env.example .env
 ```
 
