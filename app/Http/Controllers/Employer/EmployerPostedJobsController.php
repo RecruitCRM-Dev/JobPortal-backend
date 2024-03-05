@@ -35,8 +35,10 @@ class EmployerPostedJobsController extends Controller
             ->where('job_id', $job->id)
             ->get();
 
+        $totalJobApplications = $users->count();
+
         // return JobApplicationResource::collection([$users, $job]);
-        return response()->json(['job' => $job, 'users' => $users]);
+        return response()->json(['job' => $job, 'users' => $users, 'job_application_count' => $totalJobApplications]);
     }
 
     //TODO: how to uniquely define a job ?
