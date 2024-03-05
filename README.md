@@ -61,16 +61,16 @@ php artisan migrate --seed
 ## Post Jobs
 
 ### 1. Get all the users of employer -> 1 with job -> 18:
-- Endpoint: `employer/1/jobs/1` (GET)
+- Endpoint: `employer/:employerId/jobs/:jobId` (GET)
 
 ### 2. Posted all jobs:
-- Endpoint: `employer/1/jobs` (GET)
+- Endpoint: `employer/:employerId/jobs` (GET)
 
 ### 3. Post a job:
-- Endpoint: `employer/1/jobs` (POST)
+- Endpoint: `employer/:employerId/jobs` (POST)
 
 ### 4. Update Job Status:
-- Endpoint: `employer/2/jobs/32` (PUT)
+- Endpoint: `employer/:employerId/jobs/:jobId` (PUT)
 
 ## User
 
