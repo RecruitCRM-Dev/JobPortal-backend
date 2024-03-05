@@ -60,7 +60,7 @@ php artisan migrate --seed
 
 ## Post Jobs
 
-### 1. Get all the users of employer -> 1 with job -> 18:
+### 1. Get all the users of employer -> employerId with job -> JobId:
 - Endpoint: `employer/:employerId/jobs/:jobId` (GET)
 
 ### 2. Posted all jobs:
