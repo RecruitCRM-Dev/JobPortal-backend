@@ -56,8 +56,8 @@ Route::prefix('user')->group(function () {
         //Profile Routes
         Route::post('profile/{user}', [UsersProfileController::class, 'update']);
         Route::get('profile/{user}/insights', [UserInsights::class, 'getInsights']);
-        Route::get('{user}/notifications', [StatusNotificationController::class, 'getLatestNotifications']);
-
+        Route::get('{user}/notifications',[StatusNotificationController::class,'getLatestNotifications']);
+        Route::put('{user}/notification/{notification}',[StatusNotificationController::class, 'markAsRead']);
 
         //Job Post Routes
         Route::apiResource('{user}/jobs', JobApplicationController::class);
