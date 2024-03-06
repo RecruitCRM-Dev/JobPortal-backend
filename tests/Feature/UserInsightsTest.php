@@ -21,7 +21,8 @@ class UserInsightsTest extends TestCase
 
     public function testGetInsights()
     {
-      $user = User::factory()->create();
+      $users = User::all()->shuffle();
+      $user = $users->pop();
     
       $response = $this->postJson('/api/user/login',[
         'email' => $user->email, 

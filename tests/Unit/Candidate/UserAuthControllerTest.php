@@ -9,6 +9,7 @@ class UserAuthControllerTest extends TestCase
 {
   protected static ?string $password;
   protected $token;
+  protected $user;
     /**
      * Creates the application.
      *
@@ -24,9 +25,10 @@ class UserAuthControllerTest extends TestCase
 
     public function testUserLogin()
     {
-      $user = User::factory()->create();
+      $users = User::all()->shuffle();
+      $this->user = $users->pop();
       $response = $this->postJson('/api/user/login',[
-        'email' => $user->email, 
+        'email' => $this->user->email, 
         'password' => 'password'
       ]);
       
