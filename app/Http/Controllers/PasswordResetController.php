@@ -26,7 +26,7 @@ class PasswordResetController extends Controller
                 Mail::to($user)->send(new PasswordResetLink($user, $token)); // Example using Laravel mail
                 return response()->json(['message' => 'Password reset link sent successfully.'], 200);
             } else {
-                return response()->json(['message' => 'Not registered yet'], 400);
+                return response()->json(['error' => 'Not registered yet'], 400);
             }
         } else {
             $employer = Employer::where('email', $request->email)->first();
